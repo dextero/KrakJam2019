@@ -11,7 +11,7 @@ namespace TurboSnail3001.Input
     public class HardwareController : MonoBehaviour, IController
     {
         #region Public Variables
-        public float State => _Frequency;
+        public float State => _State;
         #endregion Public Variables
 
         #region Inspector Variables
@@ -52,7 +52,7 @@ namespace TurboSnail3001.Input
         private void Update()
         {
 #if UNITY_EDITOR
-            UnityEditor.EditorUtility.SetDirty(this);
+            Sirenix.Utilities.Editor.GUIHelper.RequestRepaint();
 #endif
             _State = (_Frequency - _MinFrequency) / (float)(_MaxFrequency - _MinFrequency);
         }

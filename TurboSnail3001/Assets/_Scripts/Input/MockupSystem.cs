@@ -40,33 +40,33 @@ namespace TurboSnail3001.Input
 
         #region Private Methods
         [Button, FoldoutGroup("Debug")]
-        private void RightMoveTowards()
+        private void RightPush()
         {
             StartCoroutine(Move(_Right, _Towards, _Time));
         }
         [Button, FoldoutGroup("Debug")]
-        private void RightMoveAway()
+        private void RightPull()
         {
             StartCoroutine(Move(_Right, _Away, _Time));
         }
         [Button, FoldoutGroup("Debug")]
-        private void LeftMoveTowards()
+        private void LeftPush()
         {
             StartCoroutine(Move(_Left, _Towards, _Time));
         }
         [Button, FoldoutGroup("Debug")]
-        private void LeftMoveAway()
+        private void LeftPull()
         {
             StartCoroutine(Move(_Right, _Away, _Time));
         }
         [Button, FoldoutGroup("Debug")]
-        private void BothMoveTowards()
+        private void BothPush()
         {
             StartCoroutine(Move(_Right, _Towards, _Time));
             StartCoroutine(Move(_Left, _Towards, _Time));
         }
         [Button, FoldoutGroup("Debug")]
-        private void BothMoveAway()
+        private void BothPull()
         {
             StartCoroutine(Move(_Right, _Away, _Time));
             StartCoroutine(Move(_Left, _Away, _Time));
