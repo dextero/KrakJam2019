@@ -21,7 +21,12 @@ public class Snail : MonoBehaviour
         set { Velocity = Transform.forward.normalized * value; }
     }
 
-    private float MoveSpeed;
+    private const float SPEED_CHANGE_STEP = 0.5f;
+    private const float UNBOOSTED_SPEED_LIMIT = 5.0f;
+    private const float SLOWDOWN_FACTOR = 0.99f;
+    private const float ROTATION_SPEED = 1.0f;
+
+    public float MoveSpeed;
     private float RotationSpeed;
 
     // Start is called before the first frame update
@@ -34,16 +39,17 @@ public class Snail : MonoBehaviour
     [Button]
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.S)) { MoveSpeed = -1.0f; }
-        if (Input.GetKeyDown(KeyCode.W)) { MoveSpeed = +1.0f; }
-        if (Input.GetKeyDown(KeyCode.A)) { RotationSpeed = -1.0f; }
-        if (Input.GetKeyDown(KeyCode.D)) { RotationSpeed = +1.0f; }
+        if (Input.GetKeyDown(KeyCode.S)) { MoveSpeed -= SPEED_CHANGE_STEP; }
+        if (Input.GetKeyDown(KeyCode.W)) { MoveSpeed += SPEED_CHANGE_STEP; }
+        if (Input.GetKeyDown(KeyCode.A)) { RotationSpeed = -ROTATION_SPEED; }
+        if (Input.GetKeyDown(KeyCode.D)) { RotationSpeed = +ROTATION_SPEED; }
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { RotationSpeed = 0.0f; }
-
-        if (Input.GetKeyDown(KeyCode.LeftShift)) { MoveSpeed *= 10.0f; }
-        if (Input.GetKeyUp(KeyCode.LeftShift)) { MoveSpeed /= 10.0f; }
 
         Speed = MoveSpeed;
         Transform.Rotate(0.0f, RotationSpeed, 0.0f);
+
+        if (MoveSpeed > UNBOOSTED_SPEED_LIMIT || MoveSpeed < -UNBOOSTED_SPEED_LIMIT) {
+            MoveSpeed *= SLOWDOWN_FACTOR;
+        }
     }
 }
