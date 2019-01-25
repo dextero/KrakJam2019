@@ -24,7 +24,7 @@ ExportedObj/
 *.pdb
 *.opendb
 
-Assets/Prefabs/ArduinoController.prefab
+/TurboSnail3001/Assets/Prefabs/ArduinoController.prefab*
 
 # Unity3D generated meta files
 *.pidb.meta
