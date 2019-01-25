@@ -40,6 +40,9 @@ public class Snail : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D)) { RotationSpeed = +1.0f; }
         if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D)) { RotationSpeed = 0.0f; }
 
+        if (Input.GetKeyDown(KeyCode.LeftShift)) { MoveSpeed *= 10.0f; }
+        if (Input.GetKeyUp(KeyCode.LeftShift)) { MoveSpeed /= 10.0f; }
+
         Speed = MoveSpeed;
         Transform.Rotate(0.0f, RotationSpeed, 0.0f);
     }
