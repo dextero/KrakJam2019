@@ -21,7 +21,7 @@ public class Snail : MonoBehaviour
         set { Velocity = Transform.forward.normalized * value; }
     }
 
-    private const float SPEED_CHANGE_STEP = 0.5f;
+    private const float SPEED_CHANGE_STEP = 1.0f;
     private const float UNBOOSTED_SPEED_LIMIT = 5.0f;
     private const float SLOWDOWN_FACTOR = 0.99f;
     private const float ROTATION_SPEED = 1.0f;
