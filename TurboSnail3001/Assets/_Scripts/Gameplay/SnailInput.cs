@@ -18,6 +18,7 @@ namespace TurboSnail3001
 
         #region Inspector Variables
         [SerializeField] private SettingsData _Settings;
+        [SerializeField] private float _EndOfTheWorldY = -50.0f;
         #endregion Inspector Variables
 
         #region Unity Methods
@@ -83,6 +84,10 @@ namespace TurboSnail3001
             }
             if (right > 0.0f) {
                 _Rigidbody.AddTorque(-transform.up * right * _Settings.RotateSpeed);
+            }
+
+            if (_Transform.position.y < _EndOfTheWorldY) {
+                GameController.Instance.Finish(FinishResult.Failed);
             }
         }
         #endregion Unity Methods
