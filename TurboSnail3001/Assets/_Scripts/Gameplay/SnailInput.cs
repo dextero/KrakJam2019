@@ -43,26 +43,25 @@ namespace TurboSnail3001
             var input = GameController.Instance.InputSystem;
 
             /* on linux _Input is null when controllers are not plugged in */
-            if (input != null)
+            if (float.IsNaN(input.LeftController.Position) || float.IsNaN(input.RightController.Position))
+            {
+                if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+                {
+                    right = 1.0f;
+                }
+                if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                {
+                    left = 1.0f;
+                }
+            }
+            else
             {
                 left  = input.LeftController.Position;
                 right = input.RightController.Position;
             }
 
             /* calculate velocity */
-            float velocity = (left +  right);
-
-            /* todo: for debug only */
-            if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
-            {
-                left = 0.0f;
-                right = 1.0f;
-            }
-            if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
-            {
-                left  = 1.0f;
-                right = 0.0f;
-            }
+            float velocity = (left + right);
 
             /* calculate data for the ghost */
             var frame = new GhostSystem.FrameData
