@@ -17,6 +17,8 @@ namespace TurboSnail3001
         #region Unity Methods
         private void Awake()
         {
+            _Snail = GetComponent<Snail>();
+
             _Transform = GetComponent<Transform>();
             _Rigidbody = GetComponent<Rigidbody>();
         }
@@ -41,14 +43,15 @@ namespace TurboSnail3001
             /* calculate velocity */
             float velocity = (left +  right);
 
-            _Rigidbody.AddForce(_Transform.forward * _Speed * velocity);
+            _Rigidbody.AddForceAtPosition(_Transform.forward * _Speed * velocity, _Snail.Drivetrain.position);
 
-            _Rigidbody.AddTorque(-_Transform.up * left * _RotateSpeed);
-            _Rigidbody.AddTorque(_Transform.up * right * _RotateSpeed);
+            _Rigidbody.AddForceAtPosition(-_Transform.right * _Speed * left, _Snail.Steering.position);
+            _Rigidbody.AddForceAtPosition(_Transform.right * _Speed * right, _Snail.Steering.position);
         }
         #endregion Unity Methods
 
         #region Private Variables
+        private Snail _Snail;
         private Rigidbody _Rigidbody;
         private Transform _Transform;
         #endregion Private Variables

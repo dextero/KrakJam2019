@@ -6,6 +6,16 @@ namespace TurboSnail3001
 
     public class Snail : MonoBehaviour
     {
+        #region Public Variables
+        public Transform Steering => _Steering;
+        public Transform Drivetrain => _Drivetrain;
+        #endregion Public Variables
+
+        #region Inspector Variables
+        [SerializeField] private Transform _Steering;
+        [SerializeField] private Transform _Drivetrain;
+        #endregion Inspector Variables
+
         #region Unity Methods
         private void Awake()
         {
