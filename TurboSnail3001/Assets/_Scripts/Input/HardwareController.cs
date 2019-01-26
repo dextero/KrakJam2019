@@ -35,8 +35,15 @@ namespace TurboSnail3001.Input
         #region Unity Methods
         private void OnEnable()
         {
-            _Stream = new SerialPort(Port, Baudrate);
-            _Stream.Open();
+            try
+            {
+                _Stream = new SerialPort(Port, Baudrate);
+                _Stream.Open();
+            }
+            catch (Exception e)
+            {
+                Debug.LogError("No controllero");
+            }
 
             _Thread = new Thread(Read);
             _Thread.Start();
@@ -71,6 +78,7 @@ namespace TurboSnail3001.Input
         #region Private Methods
         private void Read()
         {
+            if (_Stream == null || !_Stream.IsOpen) { return; }
             while (_ThreadRun)
             {
                 try

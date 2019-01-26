@@ -29,7 +29,8 @@
             _Transform.position = Vector3.Lerp(_Transform.position, _Target.position + offset,
                 Time.deltaTime * _TranslationSpeed);
 
-            _Transform.LookAt(_Target);
+            //  _Transform.LookAt(_Target);
+            _Transform.rotation = Quaternion.Slerp(_Transform.rotation, Quaternion.Euler(_Transform.eulerAngles.x, _Target.eulerAngles.y, _Transform.eulerAngles.z), Time.deltaTime * _RotationSpeed);
         }
         #endregion Unity Methods
 

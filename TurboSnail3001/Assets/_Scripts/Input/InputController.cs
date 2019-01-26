@@ -8,6 +8,7 @@
         #region Public Types
         public class Controller
         {
+            [InlineEditor]
             public HardwareController Reference;
 
             public float Position;
@@ -48,6 +49,10 @@
         {
             UpdateState(_LeftController);
             UpdateState(_RightController);
+
+#if UNITY_EDITOR
+            Sirenix.Utilities.Editor.GUIHelper.RequestRepaint();
+#endif
         }
         #endregion Unity Methods
 

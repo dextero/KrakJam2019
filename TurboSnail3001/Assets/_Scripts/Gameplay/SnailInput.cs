@@ -32,13 +32,13 @@ namespace TurboSnail3001
             /* todo: for debug only */
             if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
             {
-                left = 1.0f;
-                right = 0.0f;
+                left = 0.0f;
+                right = 1.0f;
             }
             if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
             {
-                left  = 0.0f;
-                right = 1.0f;
+                left  = 1.0f;
+                right = 0.0f;
             }
 
             /* calculate velocity */
@@ -46,8 +46,11 @@ namespace TurboSnail3001
 
             _Rigidbody.AddForceAtPosition(_Transform.forward * _Speed * velocity, _Snail.Drivetrain.position);
 
-            _Rigidbody.AddForceAtPosition(-_Transform.right * _RotateSpeed * left, _Snail.Steering.position);
-            _Rigidbody.AddForceAtPosition(_Transform.right * _RotateSpeed * right, _Snail.Steering.position);
+            //Rigidbody.AddForceAtPosition(_Transform.right * _RotateSpeed * left, _Snail.Steering.position);
+            // _Rigidbody.AddForceAtPosition(-_Transform.right * _RotateSpeed * right, _Snail.Steering.position);
+
+            _Rigidbody.AddTorque(transform.up * left * _RotateSpeed);
+            _Rigidbody.AddTorque(-transform.up * right * _RotateSpeed);
         }
         #endregion Unity Methods
 
