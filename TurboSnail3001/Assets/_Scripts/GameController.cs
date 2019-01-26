@@ -53,9 +53,12 @@ public class GameController : MonoBehaviour
         }
     }
     public void Finish(FinishResult result) { 
-        Target.Save.Score = CalculateScore(result);
-        NicknameInputOverlay.SetActive(true);
-        NicknamePromptMessage.SetText($"Your score: {Target.Save.Score}");
+        if (Target.Save.Score == 0)
+        {
+            Target.Save.Score = CalculateScore(result);
+            NicknameInputOverlay.SetActive(true);
+            NicknamePromptMessage.SetText($"Your score: {Target.Save.Score}");
+        }
     }
     public void OnNicknameInputFinished()
     {
