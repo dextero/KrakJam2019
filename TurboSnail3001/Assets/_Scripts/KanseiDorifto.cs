@@ -1,49 +1,54 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Canvas))]
 public class KanseiDorifto : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject TrianglePrefab;
+    #region Inspector Variables
+    [SerializeField] private GameObject _TrianglePrefab;
+    [SerializeField] private int num_triangles = 20;
+    #endregion Inspector Variables
 
-    private List<GameObject> triangles = new List<GameObject>();
-
-    private const int NUM_TRIANGLES = 20;
-    private float minOffset;
-    private float randomOffsetRange;
-
-    private Vector2 axisScaleFactor;
-
-    // Start is called before the first frame update
-    void Start()
+    #region Unity Methods
+    private void Awake()
     {
-        for (int i = 0; i < NUM_TRIANGLES; ++i) {
-            GameObject triangle = Instantiate(TrianglePrefab, Vector3.zero, Quaternion.identity);
+        _Canvas = GetComponent<Canvas>();
+    }
+
+    private void Start()
+    {
+        var rect = _Canvas.pixelRect;
+
+        for (int i = 0; i < num_triangles; ++i)
+        {
+            var triangle = Instantiate(_TrianglePrefab, Vector3.zero, Quaternion.identity);
             triangles.Add(triangle);
             triangle.transform.SetParent(transform, false);
         }
 
-        float wh = (float) Screen.currentResolution.width / (float) Screen.currentResolution.height;
-        float hw = (float) Screen.currentResolution.height / (float) Screen.currentResolution.width;
+        float wh = rect.width / rect.height;
+        float hw = rect.height / rect.width;
+
         axisScaleFactor = new Vector2(Math.Max(wh, 1.0f), Math.Max(hw, 1.0f));
-        int minScreenDimension = Math.Min(Screen.currentResolution.width, Screen.currentResolution.height);
-        minOffset = (float) minScreenDimension / 3.0f;
-        randomOffsetRange = (Screen.currentResolution.width + Screen.currentResolution.height) / 4 - minOffset;
+        float minScreenDimension = Math.Min(rect.width, rect.height);
+        minOffset = minScreenDimension / 3.0f;
+        randomOffsetRange = (rect.width + rect.height) / 4 - minOffset;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        var rect   = _Canvas.pixelRect;
+
         System.Random random = new System.Random();
-        foreach (GameObject triangle in triangles) {
+        foreach (GameObject triangle in triangles)
+        {
             float angle = (float) (random.NextDouble() * 360.0);
             float angleRadians = angle * (float) Math.PI / 180.0f;
             float circleX = (float) Math.Cos(angleRadians);
             float circleY = (float) Math.Sin(angleRadians);
-            Vector3 center = new Vector3(Screen.currentResolution.width / 2,
-                                         Screen.currentResolution.height / 2,
+            Vector3 center = new Vector3(rect.width / 2,
+                                         rect.height / 2,
                                          0.0f);
             Vector3 ellipse = new Vector3(circleX * minOffset * axisScaleFactor.x,
                                           circleY * minOffset * axisScaleFactor.y,
@@ -55,4 +60,15 @@ public class KanseiDorifto : MonoBehaviour
                                                       Quaternion.Euler(0.0f, 0.0f, angle));
         }
     }
+    #endregion Unity Methods
+
+    #region Private Variables
+    private readonly List<GameObject> triangles = new List<GameObject>();
+
+    private float minOffset;
+    private float randomOffsetRange;
+
+    private Vector2 axisScaleFactor;
+    private Canvas _Canvas;
+    #endregion Private Variables
 }
