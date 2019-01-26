@@ -54,7 +54,7 @@ namespace TurboSnail3001.Input
 #if UNITY_EDITOR
             Sirenix.Utilities.Editor.GUIHelper.RequestRepaint();
 #endif
-            _State = (_Frequency - _MinFrequency) / (float)(_MaxFrequency - _MinFrequency);
+            _State = 1.0f - Mathf.Clamp01((_Frequency - _MinFrequency) / (float)(_MaxFrequency - _MinFrequency));
         }
         #endregion Unity Methods
 

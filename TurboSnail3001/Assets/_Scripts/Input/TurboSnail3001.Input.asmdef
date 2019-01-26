@@ -1,8 +1,6 @@
 {
     "name": "TurboSnail3001.Input",
-    "references": [
-        "TurboSnail3001.Movement"
-    ],
+    "references": [],
     "optionalUnityReferences": [],
     "includePlatforms": [],
     "excludePlatforms": [],

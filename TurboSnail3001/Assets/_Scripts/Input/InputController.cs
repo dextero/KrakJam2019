@@ -13,30 +13,36 @@ namespace TurboSnail3001.Input
             Hardware,
             Mockup
         }
-
-        public enum State
+        public class Controller
         {
-            Pull,
-            Center,
-            Push
+            public IController Reference;
+
+            public float Position;
+            public float Velocity;
+            public float Acceleration;
+
+            [HideInInspector] public float PreviousPosition;
+            [HideInInspector] public float PreviousVelocity;
         }
         #endregion Public Types
 
+        #region Public Variables
+        public Controller LeftController => _LeftController;
+        public Controller RightController => _RightController;
+        #endregion Public Variables
+
         #region Inspector Variables
         [SerializeField, FoldoutGroup("References")]
-        private IController _Left;
+        private IController _LeftHardware;
 
         [SerializeField, FoldoutGroup("References")]
-        private IController _Right;
+        private IController _RightHardware;
 
         [SerializeField, FoldoutGroup("References")]
         private IController _LeftMockup;
 
         [SerializeField, FoldoutGroup("References")]
         private IController _RightMockup;
-
-        [SerializeField, FoldoutGroup("References")]
-        private Snail _Snail;
 
         [SerializeField, FoldoutGroup("Settings")]
         private InputType _Type;
@@ -45,79 +51,56 @@ namespace TurboSnail3001.Input
         #region Unity Methods
         private void Awake()
         {
-            /* enable selected controllers */
+            /* select controllers */
             switch (_Type)
             {
                 case InputType.Hardware:
                 {
+                    _LeftController.Reference = _LeftHardware;
+                    _RightController.Reference = _LeftHardware;
+
                     _LeftMockup.gameObject.SetActive(false);
                     _RightMockup.gameObject.SetActive(false);
-
-                    _Left.gameObject.SetActive(true);
-                    _Right.gameObject.SetActive(true);
                     break;
                 }
                 case InputType.Mockup:
                 {
-                    _Left.gameObject.SetActive(false);
-                    _Right.gameObject.SetActive(false);
+                    _LeftController.Reference  = _LeftMockup;
+                    _RightController.Reference = _RightMockup;
 
-                    _LeftMockup.gameObject.SetActive(true);
-                    _RightMockup.gameObject.SetActive(true);
+                    _LeftHardware.gameObject.SetActive(false);
+                    _RightHardware.gameObject.SetActive(false);
                     break;
                 }
                 default:
                 throw new ArgumentOutOfRangeException();
             }
+
+            /* enable selected */
+            _LeftController.Reference.gameObject.SetActive(true);
+            _RightController.Reference.gameObject.SetActive(true);
         }
         private void FixedUpdate()
         {
-            UpdateState(_LeftController, ref _LeftState);
-            UpdateState(_RightController, ref _RightState);
-
-            _Snail.Left(_LeftController.State);
+            UpdateState(_LeftController);
+            UpdateState(_RightController);
         }
         #endregion Unity Methods
 
         #region Private Variables
-        private IController _LeftController => _Type == InputType.Hardware ? _Left : _LeftMockup;
-        private IController _RightController => _Type == InputType.Hardware ? _Right : _RightMockup;
-
-        [ShowInInspector, FoldoutGroup("Preview")]
-        private float _LeftValue => _LeftController?.State ?? -1.0f;
-
-        [ShowInInspector, FoldoutGroup("Preview")]
-        private float _RightValue => _RightController?.State ?? -1.0f;
-
-        [ShowInInspector, FoldoutGroup("Preview")]
-        private State _LeftState = State.Center;
-        private State _RightState = State.Center;
+        [ShowInInspector, ReadOnly, FoldoutGroup("Preview")] private readonly Controller _LeftController  = new Controller();
+        [ShowInInspector, ReadOnly, FoldoutGroup("Preview")] private readonly Controller _RightController = new Controller();
         #endregion Private Variables
 
         #region Private Methods
-        private void UpdateState(IController controller, ref State state)
+        private static void UpdateState(Controller controller)
         {
-            var value = controller.State;
-            switch (state)
-            {
-                case State.Pull:
-                {
-                    if (value < 0.7f) { state = State.Center; Debug.Log(controller.name + ": center"); }
-                    return;
-                }
-                case State.Center:
-                {
-                    if (value < 0.2f) { state = State.Push; Debug.Log(controller.name + ": push"); }
-                    if (value > 0.8f) { state = State.Pull; Debug.Log(controller.name + ": pull"); }
+            controller.PreviousPosition = controller.Position;
+            controller.PreviousVelocity = controller.Velocity;
 
-                    return;
-                }
-                case State.Push:
-                {
-                    if (value > 0.3f) { state = State.Center; Debug.Log(controller.name + ": center"); };
-                    return;
-                }
-            }
+            controller.Position = controller.Reference.State;
+            controller.Velocity = (controller.PreviousPosition - controller.Position) / Time.deltaTime;
+            controller.Acceleration = (controller.PreviousVelocity - controller.Velocity) / Time.deltaTime;
         }
         #endregion Private Methods
     }

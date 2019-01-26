@@ -8,7 +8,7 @@
         #region Public Variables
         public float State
         {
-            get => _State;
+            get => 1.0f - _State;
             set => _State = value;
         }
         #endregion Public Variables

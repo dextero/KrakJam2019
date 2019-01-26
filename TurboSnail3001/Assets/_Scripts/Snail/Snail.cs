@@ -1,67 +1,29 @@
-﻿using UnityEngine;
+﻿using Sirenix.OdinInspector;
 
-public class Snail : MonoBehaviour
+namespace TurboSnail3001
 {
-    #region Public Types
-    public enum ControlSignals
+    using UnityEngine;
+
+    public class Snail : MonoBehaviour
     {
-        RightPull,
-        RightPush,
-
-        LeftPull,
-        LeftPush,
-
-        BothPull,
-        BothPush
-    }
-    #endregion Public Types
-
-    #region Public Methods
-    public void Left(float value)
-    {
-        _Rigidbody.AddTorque(0.0f, -_RotateSpeed * Mathf.Clamp01(1.0f - value), 0.0f);
-    }
-    #endregion Public Methods
-
-    #region Inspector Variables
-    [SerializeField] private float _Speed;
-    [SerializeField] private float _RotateSpeed;
-    #endregion Inspector Variables
-
-    #region Unity Methods
-    private void Awake()
-    {
-        _Transform = GetComponent<Transform>();
-        _Rigidbody = GetComponent<Rigidbody>();
-    }
-
-    private void Update()
-    {
-    }
-
-    private void FixedUpdate()
-    {
-        if (Input.GetKey(KeyCode.UpArrow))
+        #region Unity Methods
+        private void Awake()
         {
-            _Rigidbody.AddForce(_Transform.forward * _Speed);
+            _Transform = GetComponent<Transform>();
+            _Rigidbody = GetComponent<Rigidbody>();
         }
-        if (Input.GetKey(KeyCode.DownArrow))
-        {
-            _Rigidbody.AddForce(-_Transform.forward * _Speed);
-        }
-        if (Input.GetKey(KeyCode.LeftArrow))
-        {
-            _Rigidbody.AddTorque(0.0f, -_RotateSpeed, 0.0f);
-        }
-        if (Input.GetKey(KeyCode.RightArrow))
-        {
-            _Rigidbody.AddTorque(0.0f, _RotateSpeed, 0.0f);
-        }
-    }
-    #endregion Unity Methods
 
-    #region Private Variables
-    private Rigidbody _Rigidbody;
-    private Transform _Transform;
-    #endregion Private Variables
+        private void Update()
+        {
+            _Angle = Vector3.SignedAngle(_Transform.forward, _Rigidbody.velocity, Vector3.up);
+        }
+        #endregion Unity Methods
+
+        #region Private Variables
+        private Transform _Transform;
+        private Rigidbody _Rigidbody;
+
+        [ShowInInspector, ReadOnly] private float _Angle;
+        #endregion Private Variables
+    }
 }

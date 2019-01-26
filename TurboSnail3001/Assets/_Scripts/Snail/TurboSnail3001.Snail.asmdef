@@ -1,3 +1,14 @@
-﻿{
-	"name": "TurboSnail3001.Movement"
+{
+    "name": "TurboSnail3001.Movement",
+    "references": [
+        "TurboSnail3001.Input"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }
