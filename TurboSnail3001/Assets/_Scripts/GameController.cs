@@ -28,6 +28,9 @@ public class GameController : MonoBehaviour
         }
     }
 
+    // true if game countdown finished, snail still alive and not finished
+    public bool IsRunning { get; set; }
+
     [FoldoutGroup("References")] public InputController InputSystem;
     [FoldoutGroup("References")] public GhostSystem GhostSystem;
     [FoldoutGroup("References")] public SaveSystem SaveSystem;
@@ -35,6 +38,7 @@ public class GameController : MonoBehaviour
     [FoldoutGroup("References")] public GameObject NicknameInputOverlay;
     [FoldoutGroup("References")] public TextMeshProUGUI NicknamePromptMessage;
     [FoldoutGroup("References")] public TMP_InputField NicknameInput;
+    [FoldoutGroup("References")] public Countdown Countdown;
     #endregion Public Variables
 
     #region Public Methods
@@ -52,13 +56,19 @@ public class GameController : MonoBehaviour
             return 0;
         }
     }
+    public void StartGame() {
+        IsRunning = true;
+        _StartTime = Time.fixedTime;
+    }
     public void Finish(FinishResult result) { 
-        if (Target.Save.Score == 0)
-        {
-            Target.Save.Score = CalculateScore(result);
-            NicknameInputOverlay.SetActive(true);
-            NicknamePromptMessage.SetText($"Your score: {Target.Save.Score}");
+        if (!IsRunning) {
+            return;
         }
+
+        IsRunning = false;
+        Target.Save.Score = CalculateScore(result);
+        NicknameInputOverlay.SetActive(true);
+        NicknamePromptMessage.SetText($"Your score: {Target.Save.Score}");
     }
     public void OnNicknameInputFinished()
     {
@@ -70,11 +80,12 @@ public class GameController : MonoBehaviour
     #endregion Public Methods
 
     #region Unity Methods
-    private void Awake() { _GotoScene = GetComponent<GotoScene>(); }
     private void Start() {
         _GameController = this;
-        _StartTime = Time.fixedTime;
+        IsRunning = false;
+        Countdown.gameObject.SetActive(true);
     }
+    private void Awake() { _GotoScene = GetComponent<GotoScene>(); }
     #endregion Unity Methods
 
     #region Private Variables

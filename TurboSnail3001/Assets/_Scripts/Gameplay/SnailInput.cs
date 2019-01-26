@@ -36,6 +36,10 @@ namespace TurboSnail3001
         }
         private void FixedUpdate()
         {
+            if (!GameController.Instance.IsRunning) {
+                return;
+            }
+
             /* get input */
             float left = 0.0f;
             float right = 0.0f;
