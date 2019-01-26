@@ -47,6 +47,7 @@ public class GameController : MonoBehaviour
     }
     public void OnNicknameInputFinished()
     {
+        Target.Save.Nickname = NicknameInput.text;
         SaveSystem.Add(Target.Save);
         SaveSystem.Save();
         _GotoScene.GotoHighscore();
