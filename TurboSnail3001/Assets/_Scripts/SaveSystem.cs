@@ -9,6 +9,7 @@ using UnityEngine;
 public class Save
 {
     public string Nickname;
+    public int Score;
 
     public Vector3 StartPosition;
     public Quaternion StartRotation;

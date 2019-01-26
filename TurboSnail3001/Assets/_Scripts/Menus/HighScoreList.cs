@@ -1,56 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Sirenix.OdinInspector;
+﻿using System.Linq;
 using TMPro;
 using UnityEngine;
-
-[Serializable]
-public struct HighScoreEntry
-{
-    public string Nickname;
-    public int Score;
-}
-
-[Serializable]
-public class Highscores
-{
-    public List<HighScoreEntry> Entries;
-}
-
-public static class HighScoreFile
-{
-    #region Public Methods
-    public static List<HighScoreEntry> Load()
-    {
-        var json = File.ReadAllText(HighScoreFilePath);
-        var result = JsonUtility.FromJson<Highscores>(json);
-
-        return result.Entries;
-    }
-
-    public static void Save(List<HighScoreEntry> scores)
-    {
-        var obj = new Highscores {Entries = scores};
-        var json = JsonUtility.ToJson(obj);
-
-        File.WriteAllText(HighScoreFilePath, json);
-    }
-
-    public static void Update(string newNickname, int newScore)
-    {
-        var scores = Load();
-        scores.Add(new HighScoreEntry { Nickname = newNickname, Score = newScore });
-        Save(scores.OrderBy(entry => -entry.Score)
-                   .ToList());
-    }
-    #endregion Public Methods
-
-    #region Private Variables
-    private static string HighScoreFilePath => Path.Combine(Application.persistentDataPath, "hiscore.json");
-    #endregion Private Variables
-}
 
 public class HighScoreList : MonoBehaviour
 {
@@ -64,6 +14,8 @@ public class HighScoreList : MonoBehaviour
     #region Inspector Variables
     [SerializeField]
     private GameObject _HighScoreListEntryPrefab;
+
+    [SerializeField] private SaveSystem _SaveSystem;
     #endregion Inspector Variables
 
     #region Unity Methods
@@ -93,27 +45,12 @@ public class HighScoreList : MonoBehaviour
             Destroy(childTransform.gameObject);
         }
 
-        var entries = HighScoreFile.Load();
-        foreach (var entry in entries)
+        var entries = _SaveSystem.Load();
+        var sorted = entries.Saves.OrderByDescending(x => x.Score);
+        foreach (var entry in sorted)
         {
             AppendEntry(MakeHighScoreListEntry(entry.Nickname, entry.Score));
         }
     }
     #endregion Private Methods
-
-    #region Helper Methods
-    [Button]
-    private void AddHighScore(string nickname, int score)
-    {
-        HighScoreFile.Update(nickname, score);
-        Reload();
-    }
-
-    [Button]
-    private void ResetHighScores()
-    {
-        HighScoreFile.Save(new List<HighScoreEntry>());
-        Reload();
-    }
-    #endregion Helper Methods
 }
