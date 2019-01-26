@@ -345,7 +345,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ba4b0105347d554793832968ed668de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _Target: {fileID: 1321636307103613004}
+  _Target: {fileID: 0}
   _TranslationSpeed: 1
   _RotationSpeed: 1
 --- !u!1 &425825005
@@ -676,8 +676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a892d2f78d80e23c6a06489c7079381b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _TrianglePrefab: {fileID: 8959976800294965170, guid: defc4c6e24331297da4f88a8f2bbfb53,
-    type: 3}
+  _TrianglePrefab: {fileID: 0}
   num_triangles: 20
 --- !u!114 &1750829563
 MonoBehaviour:
@@ -1127,6 +1126,8 @@ PrefabInstance:
       propertyPath: _Input
       value: 
       objectReference: {fileID: 1753182315}
+<<<<<<< Updated upstream
+=======
     - target: {fileID: 1145903302, guid: 43c02cdca06a78cfdaeb555541fdc039, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.35
@@ -1151,5 +1152,6 @@ PrefabInstance:
       propertyPath: _DriftThreshold
       value: 10
       objectReference: {fileID: 0}
+>>>>>>> Stashed changes
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43c02cdca06a78cfdaeb555541fdc039, type: 3}

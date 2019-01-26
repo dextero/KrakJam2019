@@ -20,13 +20,6 @@ public class KanseiDorifto : MonoBehaviour
     {
         var rect = _Canvas.pixelRect;
 
-        for (int i = 0; i < num_triangles; ++i)
-        {
-            var triangle = Instantiate(_TrianglePrefab, Vector3.zero, Quaternion.identity);
-            triangles.Add(triangle);
-            triangle.transform.SetParent(transform, false);
-        }
-
         float wh = rect.width / rect.height;
         float hw = rect.height / rect.width;
 
@@ -37,6 +30,40 @@ public class KanseiDorifto : MonoBehaviour
     }
 
     private void Update()
+    {
+        ShuffleTriangles();
+    }
+
+    private void OnEnable() {
+        for (int i = 0; i < num_triangles; ++i)
+        {
+            var triangle = Instantiate(_TrianglePrefab, Vector3.zero, Quaternion.identity);
+            triangles.Add(triangle);
+            triangle.transform.SetParent(transform, false);
+        }
+        ShuffleTriangles();
+    }
+
+    private void OnDisable() {
+        foreach (GameObject triangle in triangles)
+        {
+            Destroy(triangle);
+        }
+        triangles.Clear();
+    }
+    #endregion Unity Methods
+
+    #region Private Variables
+    private readonly List<GameObject> triangles = new List<GameObject>();
+
+    private float minOffset;
+    private float randomOffsetRange;
+
+    private Vector2 axisScaleFactor;
+    private Canvas _Canvas;
+    #endregion Private Variables
+
+    private void ShuffleTriangles()
     {
         var rect   = _Canvas.pixelRect;
 
@@ -60,15 +87,4 @@ public class KanseiDorifto : MonoBehaviour
                                                       Quaternion.Euler(0.0f, 0.0f, angle));
         }
     }
-    #endregion Unity Methods
-
-    #region Private Variables
-    private readonly List<GameObject> triangles = new List<GameObject>();
-
-    private float minOffset;
-    private float randomOffsetRange;
-
-    private Vector2 axisScaleFactor;
-    private Canvas _Canvas;
-    #endregion Private Variables
 }

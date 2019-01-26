@@ -2,6 +2,7 @@
 
 namespace TurboSnail3001
 {
+    using System;
     using UnityEngine;
 
     public class Snail : MonoBehaviour
@@ -14,6 +15,8 @@ namespace TurboSnail3001
         #region Inspector Variables
         [SerializeField] private Transform _Steering;
         [SerializeField] private Transform _Drivetrain;
+        [SerializeField] private float _DriftThreshold = 10.0f;
+        [SerializeField] private KanseiDorifto _KanseiDorifto;
         #endregion Inspector Variables
 
         #region Unity Methods
@@ -26,6 +29,7 @@ namespace TurboSnail3001
         private void Update()
         {
             _Angle = Vector3.SignedAngle(_Transform.forward, _Rigidbody.velocity, Vector3.up);
+            _KanseiDorifto.enabled = (Mathf.Abs(_Angle) > _DriftThreshold);
         }
         #endregion Unity Methods
 
