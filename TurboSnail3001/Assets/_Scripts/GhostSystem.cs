@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using TurboSnail3001;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class GhostSystem : MonoBehaviour
     [Serializable]
     public class FrameData
     {
-        public long  Frame;
+        public long Frame;
 
         public float Left;
         public float Right;
@@ -20,15 +21,20 @@ public class GhostSystem : MonoBehaviour
     [SerializeField] private GameObject _GhostPrefab;
     [SerializeField] private Material _GhostMaterial;
     [SerializeField] private string _GhostLayer;
+    [SerializeField] private int _MaxGhosts = 3;
     #endregion Inspector Variables
 
     #region Unity Methods
     private void Start()
     {
+        // prevent collisions between ghosts
+        int ghostLayerId = LayerMask.NameToLayer(_GhostLayer);
+        Physics.IgnoreLayerCollision(ghostLayerId, ghostLayerId);
+
         var saves = GameController.Instance.SaveSystem.Load();
-        if (saves.Saves.Count != 0)
+        for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
         {
-            CreateGhost(saves.Saves[0]);
+            CreateGhost(saves.Saves[i]);
         }
     }
     #endregion Unity Methods
