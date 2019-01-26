@@ -41,10 +41,10 @@ namespace TurboSnail3001
             /* calculate velocity */
             float velocity = (left +  right);
 
-            _Rigidbody.AddForce(new Vector3(_Transform.forward.x, 0.0f, _Transform.forward.z) * _Speed * velocity);
+            _Rigidbody.AddForce(_Transform.forward * _Speed * velocity);
 
-            _Rigidbody.AddTorque(0.0f, -_RotateSpeed * left, 0.0f);
-            _Rigidbody.AddTorque(0.0f, _RotateSpeed * right, 0.0f);
+            _Rigidbody.AddTorque(-_Transform.up * left * _RotateSpeed);
+            _Rigidbody.AddTorque(_Transform.up * right * _RotateSpeed);
         }
         #endregion Unity Methods
 

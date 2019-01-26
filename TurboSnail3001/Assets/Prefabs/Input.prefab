@@ -24,13 +24,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81795105}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2019279344}
   - {fileID: 1468780966}
-  m_Father: {fileID: 1323854099}
+  m_Father: {fileID: 4006640078652232580}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3523307526028944751
@@ -47,7 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Left: {fileID: 4389935492564730038}
   _Right: {fileID: 2854823321012592026}
-  _Time: 1
+  _Time: 3
   _Towards:
     serializedVersion: 2
     m_Curve:
@@ -130,7 +130,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &605695045
 Transform:
   m_ObjectHideFlags: 0
@@ -159,41 +159,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Port: COM7
   Baudrate: 115200
-  _MinFrequency: 1600000
-  _MaxFrequency: 1650000
+  _MinFrequency: 1700000
+  _MaxFrequency: 1750000
   _CutoffFrequency: 1200000
---- !u!1 &1323854098
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1323854099}
-  m_Layer: 0
-  m_Name: Controllers
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1323854099
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1323854098}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1673497405}
-  - {fileID: 81795106}
-  m_Father: {fileID: 4006640078652232580}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1377086614
 GameObject:
   m_ObjectHideFlags: 0
@@ -210,7 +178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1377086615
 Transform:
   m_ObjectHideFlags: 0
@@ -239,8 +207,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Port: COM8
   Baudrate: 115200
-  _MinFrequency: 1600000
-  _MaxFrequency: 1650000
+  _MinFrequency: 1700000
+  _MaxFrequency: 1750000
   _CutoffFrequency: 1200000
 --- !u!1 &1468780965
 GameObject:
@@ -309,13 +277,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1673497404}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1377086615}
   - {fileID: 605695045}
-  m_Father: {fileID: 1323854099}
+  m_Father: {fileID: 4006640078652232580}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2019279343
@@ -390,7 +358,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1323854099}
+  - {fileID: 1673497405}
+  - {fileID: 81795106}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -419,10 +388,10 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: _Left
+    - Name: _LeftHardware
       Entry: 10
       Data: 0
-    - Name: _Right
+    - Name: _RightHardware
       Entry: 10
       Data: 1
     - Name: _LeftMockup
@@ -431,4 +400,4 @@ MonoBehaviour:
     - Name: _RightMockup
       Entry: 10
       Data: 3
-  _Type: 1
+  _Type: 0

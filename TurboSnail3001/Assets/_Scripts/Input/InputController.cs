@@ -57,7 +57,7 @@ namespace TurboSnail3001.Input
                 case InputType.Hardware:
                 {
                     _LeftController.Reference = _LeftHardware;
-                    _RightController.Reference = _LeftHardware;
+                    _RightController.Reference = _RightHardware;
 
                     _LeftMockup.gameObject.SetActive(false);
                     _RightMockup.gameObject.SetActive(false);
