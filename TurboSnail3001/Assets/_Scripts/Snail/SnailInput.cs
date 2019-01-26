@@ -25,20 +25,21 @@ namespace TurboSnail3001
 
         private void FixedUpdate()
         {
-            /* todo: for debug only */
-            if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
-            {
-                _Rigidbody.AddForceAtPosition(-_Transform.right * _RotateSpeed, _Snail.Steering.position);
-            }
-
-            if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
-            {
-                _Rigidbody.AddForceAtPosition(_Transform.right * _RotateSpeed, _Snail.Steering.position);
-            }
-
             /* get input */
             float left  = _Input.LeftController.Position;
             float right = _Input.RightController.Position;
+
+            /* todo: for debug only */
+            if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+            {
+                left = 1.0f;
+                right = 0.0f;
+            }
+            if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
+            {
+                left  = 0.0f;
+                right = 1.0f;
+            }
 
             /* calculate velocity */
             float velocity = (left +  right);
