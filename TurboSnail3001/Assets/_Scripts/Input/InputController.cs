@@ -14,18 +14,6 @@ namespace TurboSnail3001.Input
             Mockup
         }
 
-        public enum ControlSignals
-        {
-            RightPull,
-            RightPush,
-
-            LeftPull,
-            LeftPush,
-
-            BothPull,
-            BothPush
-        }
-
         public enum State
         {
             Pull,
@@ -46,6 +34,9 @@ namespace TurboSnail3001.Input
 
         [SerializeField, FoldoutGroup("References")]
         private IController _RightMockup;
+
+        [SerializeField, FoldoutGroup("References")]
+        private Snail _Snail;
 
         [SerializeField, FoldoutGroup("Settings")]
         private InputType _Type;
@@ -83,6 +74,8 @@ namespace TurboSnail3001.Input
         {
             UpdateState(_LeftController, ref _LeftState);
             UpdateState(_RightController, ref _RightState);
+
+            _Snail.Left(_LeftController.State);
         }
         #endregion Unity Methods
 
