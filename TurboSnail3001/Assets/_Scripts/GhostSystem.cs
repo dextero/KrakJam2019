@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using TurboSnail3001;
 using UnityEngine;
 
@@ -8,7 +9,7 @@ public class GhostSystem : MonoBehaviour
     [Serializable]
     public class FrameData
     {
-        public long  Frame;
+        public long Frame;
 
         public float Left;
         public float Right;
@@ -20,16 +21,23 @@ public class GhostSystem : MonoBehaviour
     [SerializeField] private GameObject _GhostPrefab;
     [SerializeField] private Material _GhostMaterial;
     [SerializeField] private string _GhostLayer;
-    [SerializeField] private int _MaxGhosts;
+    [SerializeField] private int _MaxGhosts = 3;
     #endregion Inspector Variables
 
     #region Unity Methods
     private void Start()
     {
-        var saves = GameController.Instance.SaveSystem.Load();
-        for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
+        try
         {
-            CreateGhost(saves.Saves[i]);
+            var saves = GameController.Instance.SaveSystem.Load();
+            for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
+            {
+                CreateGhost(saves.Saves[i]);
+            }
+        }
+        catch (IOException e)
+        {
+            Debug.LogWarning(e);
         }
     }
     #endregion Unity Methods
