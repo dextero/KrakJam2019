@@ -1397,7 +1397,7 @@ MonoBehaviour:
   _GhostPrefab: {fileID: 1864963924}
   _GhostMaterial: {fileID: 2100000, guid: de4fcf94716ae4245b5611e895e52766, type: 2}
   _GhostLayer: Ghost
-  _MaxGhosts: 3
+  _MaxGhosts: 999
 --- !u!1 &1689646325
 GameObject:
   m_ObjectHideFlags: 0
@@ -1990,21 +1990,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 431084790108779862, guid: 43c02cdca06a78cfdaeb555541fdc039,
-        type: 3}
-      propertyPath: m_Drag
-      value: 0.6
-      objectReference: {fileID: 0}
-    - target: {fileID: 4651932149852078376, guid: 43c02cdca06a78cfdaeb555541fdc039,
-        type: 3}
-      propertyPath: _Settings.Speed
-      value: 120
-      objectReference: {fileID: 0}
-    - target: {fileID: 4651932149852078376, guid: 43c02cdca06a78cfdaeb555541fdc039,
-        type: 3}
-      propertyPath: _EndOfTheWorldY
-      value: -100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43c02cdca06a78cfdaeb555541fdc039, type: 3}

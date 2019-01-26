@@ -196,7 +196,7 @@ Rigidbody:
   m_GameObject: {fileID: 4201437164268598163}
   serializedVersion: 2
   m_Mass: 7
-  m_Drag: 0.5
+  m_Drag: 0.6
   m_AngularDrag: 1
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -241,6 +241,7 @@ MonoBehaviour:
   _Settings:
     Speed: 120
     RotateSpeed: 16
+  _EndOfTheWorldY: -100
 --- !u!1 &6124595633360554041
 GameObject:
   m_ObjectHideFlags: 0
