@@ -27,6 +27,10 @@ public class GhostSystem : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
+        // prevent collisions between ghosts
+        int ghostLayerId = LayerMask.NameToLayer(_GhostLayer);
+        Physics.IgnoreLayerCollision(ghostLayerId, ghostLayerId);
+
         var saves = GameController.Instance.SaveSystem.Load();
         for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
         {
