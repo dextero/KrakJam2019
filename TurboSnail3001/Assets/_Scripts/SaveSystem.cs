@@ -24,7 +24,7 @@ public class SaveSystem : MonoBehaviour
     [Serializable]
     public class SaveData
     {
-        public List<Save> Saves;
+        public List<Save> Saves = new List<Save>();
     }
     #endregion Public Types
 
@@ -40,8 +40,16 @@ public class SaveSystem : MonoBehaviour
     {
         if (_SaveData != null) { return _SaveData; }
 
-        var json = File.ReadAllText(SavesDataPath);
-        _SaveData = JsonUtility.FromJson<SaveData>(json);
+        try
+        {
+            var json = File.ReadAllText(SavesDataPath);
+            _SaveData = JsonUtility.FromJson<SaveData>(json);
+        }
+        catch (IOException e)
+        {
+            Debug.Log(e);
+            _SaveData = new SaveData();
+        }
 
         return _SaveData;
     }
@@ -51,6 +59,7 @@ public class SaveSystem : MonoBehaviour
     {
         if (_SaveData == null) { Load(); }
 
+        Directory.CreateDirectory(Path.GetDirectoryName(SavesDataPath));
         var json = JsonUtility.ToJson(_SaveData);
         File.WriteAllText(SavesDataPath, json);
     }

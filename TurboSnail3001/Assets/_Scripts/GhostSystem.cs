@@ -27,17 +27,10 @@ public class GhostSystem : MonoBehaviour
     #region Unity Methods
     private void Start()
     {
-        try
+        var saves = GameController.Instance.SaveSystem.Load();
+        for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
         {
-            var saves = GameController.Instance.SaveSystem.Load();
-            for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
-            {
-                CreateGhost(saves.Saves[i]);
-            }
-        }
-        catch (IOException e)
-        {
-            Debug.LogWarning(e);
+            CreateGhost(saves.Saves[i]);
         }
     }
     #endregion Unity Methods
