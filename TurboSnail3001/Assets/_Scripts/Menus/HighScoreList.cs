@@ -19,7 +19,7 @@ public class Highscores
     public List<HighScoreEntry> Entries;
 }
 
-public class HighScoreFile
+public static class HighScoreFile
 {
     #region Public Methods
     public static List<HighScoreEntry> Load()
@@ -99,7 +99,9 @@ public class HighScoreList : MonoBehaviour
             AppendEntry(MakeHighScoreListEntry(entry.Nickname, entry.Score));
         }
     }
+    #endregion Private Methods
 
+    #region Helper Methods
     [Button]
     private void AddHighScore(string nickname, int score)
     {
@@ -113,5 +115,5 @@ public class HighScoreList : MonoBehaviour
         HighScoreFile.Save(new List<HighScoreEntry>());
         Reload();
     }
-    #endregion Private Methods
+    #endregion Helper Methods
 }

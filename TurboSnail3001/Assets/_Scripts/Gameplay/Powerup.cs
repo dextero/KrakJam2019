@@ -1,4 +1,5 @@
-﻿using TurboSnail3001;
+﻿using System;
+using TurboSnail3001;
 using UnityEngine;
 
 public class Powerup : MonoBehaviour
@@ -8,6 +9,7 @@ public class Powerup : MonoBehaviour
     {
         None,
         Speeeed,
+        Finish
     }
     #endregion Public Types
 
@@ -22,6 +24,28 @@ public class Powerup : MonoBehaviour
 
         var obj = collider.attachedRigidbody.gameObject;
         var player = obj.GetComponent<Snail>();
+
+        switch (_Type)
+        {
+            case PowerupType.None:
+            {
+                break;
+            }
+            case PowerupType.Speeeed:
+            {
+                break;
+            }
+            case PowerupType.Finish:
+            {
+                GameController.Instance.Finish();
+                break;
+            }
+
+            default:
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+        }
 
         _Collected = true;
         Destroy(gameObject);
