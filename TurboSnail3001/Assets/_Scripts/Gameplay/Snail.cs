@@ -7,6 +7,8 @@ namespace TurboSnail3001
     public class Snail : MonoBehaviour
     {
         #region Public Variables
+        public Save Save;
+
         public Transform Steering => _Steering;
         public Transform Drivetrain => _Drivetrain;
         #endregion Public Variables
@@ -21,6 +23,9 @@ namespace TurboSnail3001
         {
             _Transform = GetComponent<Transform>();
             _Rigidbody = GetComponent<Rigidbody>();
+
+            Save.StartPosition = transform.position;
+            Save.StartRotation = transform.rotation;
         }
 
         private void Update()
@@ -35,5 +40,14 @@ namespace TurboSnail3001
 
         [ShowInInspector, ReadOnly] private float _Angle;
         #endregion Private Variables
+
+        #region Private Methods
+        [Button]
+        private void SaveSnail()
+        {
+            GameController.Instance.SaveSystem.Add(Save);
+            GameController.Instance.SaveSystem.Save();
+        }
+        #endregion Private Methods
     }
 }

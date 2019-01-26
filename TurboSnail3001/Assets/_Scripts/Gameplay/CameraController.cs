@@ -6,9 +6,6 @@
     public class CameraController : MonoBehaviour
     {
         #region Inspector Variables
-        [SerializeField, FoldoutGroup("References")]
-        private Transform _Target;
-
         [SerializeField, FoldoutGroup("Settings")]
         private float _TranslationSpeed = 1.0f;
 
@@ -19,6 +16,7 @@
         #region Unity Methods
         private void Awake()
         {
+            _Target = GameController.Instance.Target;
             _Transform         = GetComponent<Transform>();
             _TranslationOffset = _Transform.position - _Target.position;
         }
@@ -36,6 +34,7 @@
 
         #region Private Variables
         private Transform _Transform;
+        private Transform _Target;
 
         private Vector3    _TranslationOffset;
         private Quaternion _RotationOffset;

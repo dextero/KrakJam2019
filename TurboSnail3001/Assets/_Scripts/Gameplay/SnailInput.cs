@@ -1,17 +1,23 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
 
 namespace TurboSnail3001
 {
-    using TurboSnail3001.Input;
     using UnityEngine;
 
     [RequireComponent(typeof(Snail))]
     public class SnailInput : MonoBehaviour
     {
+        #region Public Type
+        [Serializable]
+        public class SettingsData
+        {
+            public float Speed;
+            public float RotateSpeed;
+        }
+        #endregion Public Type
+
         #region Inspector Variables
-        [SerializeField, FoldoutGroup("References")] private InputController _Input;
-        [SerializeField, FoldoutGroup("Settings")] private float _Speed;
-        [SerializeField, FoldoutGroup("Settings")] private float _RotateSpeed;
+        [SerializeField] private SettingsData _Settings;
         #endregion Inspector Variables
 
         #region Unity Methods
@@ -23,17 +29,28 @@ namespace TurboSnail3001
             _Rigidbody = GetComponent<Rigidbody>();
         }
 
+        public void Start()
+        {
+            _Snail.Save.Settings = _Settings;
+        }
+
         private void FixedUpdate()
         {
             /* get input */
             float left  = 0.0f;//_Input.LeftController.Position;
             float right = 0.0f;//_Input.RightController.Position;
 
+            var input = GameController.Instance.InputSystem;
+
             /* on linux _Input is null when controllers are not plugged in */
-            if (_Input != null) {
-                left  = _Input.LeftController.Position;
-                right = _Input.RightController.Position;
+            if (input != null)
+            {
+                left  = input.LeftController.Position;
+                right = input.RightController.Position;
             }
+
+            /* calculate velocity */
+            float velocity = (left +  right);
 
             /* todo: for debug only */
             if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
@@ -47,16 +64,20 @@ namespace TurboSnail3001
                 right = 0.0f;
             }
 
-            /* calculate velocity */
-            float velocity = (left +  right);
+            /* calculate data for the ghost */
+            var frame = new GhostSystem.FrameData
+            {
+                Frame = Time.frameCount,
+                Left = left,
+                Right = right,
+                Velocity = velocity
+            };
+            _Snail.Save.Frames.Add(frame);
 
-            _Rigidbody.AddForceAtPosition(_Transform.forward * _Speed * velocity, _Snail.Drivetrain.position);
-
-            //Rigidbody.AddForceAtPosition(_Transform.right * _RotateSpeed * left, _Snail.Steering.position);
-            // _Rigidbody.AddForceAtPosition(-_Transform.right * _RotateSpeed * right, _Snail.Steering.position);
-
-            _Rigidbody.AddTorque(transform.up * left * _RotateSpeed);
-            _Rigidbody.AddTorque(-transform.up * right * _RotateSpeed);
+            /* apply forces */
+            _Rigidbody.AddForceAtPosition(_Transform.forward * _Settings.Speed * velocity, _Snail.Drivetrain.position);
+            _Rigidbody.AddTorque(transform.up * left * _Settings.RotateSpeed);
+            _Rigidbody.AddTorque(-transform.up * right * _Settings.RotateSpeed);
         }
         #endregion Unity Methods
 

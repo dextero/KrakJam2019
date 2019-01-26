@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Sirenix.OdinInspector;
+using TurboSnail3001.Input;
 using UnityEngine;
 
 [RequireComponent(typeof(GotoScene))]
@@ -17,6 +19,11 @@ public class GameController : MonoBehaviour
             return _GameController;
         }
     }
+
+    [FoldoutGroup("References")] public InputController InputSystem;
+    [FoldoutGroup("References")] public GhostSystem GhostSystem;
+    [FoldoutGroup("References")] public SaveSystem SaveSystem;
+    [FoldoutGroup("References")] public Transform Target;
     #endregion Public Variables
 
     #region Public Methods
