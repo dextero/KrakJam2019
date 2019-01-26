@@ -20,15 +20,16 @@ public class GhostSystem : MonoBehaviour
     [SerializeField] private GameObject _GhostPrefab;
     [SerializeField] private Material _GhostMaterial;
     [SerializeField] private string _GhostLayer;
+    [SerializeField] private int _MaxGhosts;
     #endregion Inspector Variables
 
     #region Unity Methods
     private void Start()
     {
         var saves = GameController.Instance.SaveSystem.Load();
-        if (saves.Saves.Count != 0)
+        for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
         {
-            CreateGhost(saves.Saves[0]);
+            CreateGhost(saves.Saves[i]);
         }
     }
     #endregion Unity Methods
