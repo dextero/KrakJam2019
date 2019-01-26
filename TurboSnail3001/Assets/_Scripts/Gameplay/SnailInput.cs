@@ -50,7 +50,7 @@ namespace TurboSnail3001
             }
 
             /* calculate velocity */
-            float velocity = (left +  right);
+            float velocity = 0.5f;
 
             /* todo: for debug only */
             if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
