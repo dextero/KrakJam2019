@@ -33,12 +33,11 @@ namespace TurboSnail3001
         {
             _Snail.Save.Settings = _Settings;
         }
-
         private void FixedUpdate()
         {
             /* get input */
-            float left  = 0.0f;//_Input.LeftController.Position;
-            float right = 0.0f;//_Input.RightController.Position;
+            float left = 0.0f;
+            float right = 0.0f;
 
             var input = GameController.Instance.InputSystem;
 
@@ -50,7 +49,7 @@ namespace TurboSnail3001
             }
 
             /* calculate velocity */
-            float velocity = 1.0f;//(left +  right);
+            float velocity = (left +  right);
 
             /* todo: for debug only */
             if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
