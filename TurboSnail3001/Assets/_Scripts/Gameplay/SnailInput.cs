@@ -26,8 +26,14 @@ namespace TurboSnail3001
         private void FixedUpdate()
         {
             /* get input */
-            float left  = _Input.LeftController.Position;
-            float right = _Input.RightController.Position;
+            float left  = 0.0f;//_Input.LeftController.Position;
+            float right = 0.0f;//_Input.RightController.Position;
+
+            /* on linux _Input is null when controllers are not plugged in */
+            if (_Input != null) {
+                left  = _Input.LeftController.Position;
+                right = _Input.RightController.Position;
+            }
 
             /* todo: for debug only */
             if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
