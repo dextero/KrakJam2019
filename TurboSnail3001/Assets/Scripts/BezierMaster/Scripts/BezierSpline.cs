@@ -1,13 +1,9 @@
 ﻿//
 //Large part from catlikecoding.com Curves And Splines Tutorial
-//Thanks to Jasper Flick 
+//Thanks to Jasper Flick
 //
-using System.Collections;
-using System.Collections.Generic;
 using System;
 using UnityEngine;
-using UnityEditor;
-
 
 namespace BezierMaster
 {
@@ -45,12 +41,13 @@ namespace BezierMaster
             }
             set
             {
-
                 loop = value;
                 if (value == true)
                 {
                     if (ControlPointCount <= 1)
+                    {
                         AddCurve();
+                    }
 
                     modes[modes.Length - 1] = modes[0];
                     zRotationAtPoint[zRotationAtPoint.Length - 1] = zRotationAtPoint[0];
@@ -153,8 +150,6 @@ namespace BezierMaster
             return BezierBase.GetPoint(
                 points[i], points[i + 1], points[i + 2], points[i + 3], t);
         }
-
-
 
         public float GetRotationZ(float t)
         {
@@ -309,6 +304,54 @@ namespace BezierMaster
             points[enforcedIndex] = middle + enforcedTangent;
         }
 
+        public void AddCurve(int index)
+        {
+            AddCurve();
+            if (index <= 0) { return; }
+
+            for (int i = points.Length - 2; i > index; --i)
+            {
+                points[i] = points[i - 3];
+            }
+            for (int i = modes.Length; i > index; --i)
+            {
+                modes[i] = modes[i - 1];
+                zRotationAtPoint[i] = zRotationAtPoint[i - 1];
+                scaleFactor3d[i] = scaleFactor3d[i - 1];
+            }
+
+            // Vector3 point = points[index];
+
+            // Array.Resize(ref points, points.Length + 3);
+            // Array.Resize(ref modes, modes.Length + 1);
+            // Array.Resize(ref zRotationAtPoint, modes.Length);
+            // Array.Resize(ref scaleFactor3d, modes.Length);
+
+            // for (int i = points.Length - 1; i > index; --i)
+            // {
+            //     points[i] = points[i - 1];
+            // }
+            // for (int i = modes.Length - 1; i > index; --i)
+            // {
+            //     modes[i] = modes[i - 1];
+            //     zRotationAtPoint[i] = zRotationAtPoint[i - 1];
+            //     scaleFactor3d[i] = scaleFactor3d[i - 1];
+            // }
+
+            // point.x                   += 20f;
+            // points[index - 2] =  point;
+            // point.x                   += 20f;
+            // point.z                   += 20f;
+            // points[index - 1] =  point;
+            // point.x                   += 20f;
+            // points[index - 0] =  point;
+
+            // modes[index] = modes[index - 1];
+            // EnforceMode(points.Length - 4);
+
+            // scaleFactor3d[index] = Vector3.one;
+        }
+
         public void AddCurve()
         {
             Vector3 point = points[points.Length - 1];
@@ -341,18 +384,21 @@ namespace BezierMaster
 
         public void RemoveCurve(int index)
         {
-
             if (CurveCount <= 1 || index < 0)
+            {
                 return;
+            }
 
             if (index > 1 && index % 3 != 2)
+            {
                 index -= 1 + index % 3;
+            }
             else if (index == 1)
+            {
                 index--;
-
+            }
 
             Debug.Log(index);
-
 
             for (int i = index; i < points.Length - 3; i++)
             {
@@ -365,7 +411,6 @@ namespace BezierMaster
                     zRotationAtPoint[modeIndex] = zRotationAtPoint[modeIndex + 1];
                 }
             }
-
 
             Array.Resize(ref points, points.Length - 3);
             Array.Resize(ref modes, modes.Length - 1);
@@ -382,7 +427,6 @@ namespace BezierMaster
                 scaleFactor3d[scaleFactor3d.Length - 1] = scaleFactor3d[0];
                 EnforceMode(0);
             }
-
         }
 
         public int CurveCount

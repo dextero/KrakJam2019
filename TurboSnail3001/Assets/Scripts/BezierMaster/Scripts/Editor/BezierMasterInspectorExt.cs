@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEditor;
-using System;
+﻿using System;
 using BezierMaster.MeshesCreating;
+using UnityEditor;
+using UnityEngine;
 
 namespace BezierMaster
 {
@@ -27,9 +27,7 @@ namespace BezierMaster
         private const float handleSize = 0.1f;
 
         private int selectedIndex = -1;
-        int count;
-
-
+        private int count;
 
         private void OnEnable()
         {
@@ -37,7 +35,9 @@ namespace BezierMaster
             master.spline = master.GetComponent<BezierSpline>();
 
             if (spline == null)
+            {
                 spline = master.spline;
+            }
 
             count = master.ObjectsCount;
         }
@@ -52,7 +52,10 @@ namespace BezierMaster
             EditorGUI.indentLevel += 1;
             master.showCurveEditor = EditorGUILayout.Foldout(master.showCurveEditor, "Curve Editor");
             if (master.showCurveEditor)
+            {
                 CurveEditor();
+            }
+
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical("box");
@@ -64,23 +67,22 @@ namespace BezierMaster
                 switch (master.usingOfSpline)
                 {
                     case Using.Objects:
-                        DestroyImmediate(master.meshGO);
-                        ObjectsInstantiating();
-                        break;
+                    DestroyImmediate(master.meshGO);
+                    ObjectsInstantiating();
+                    break;
                     case Using.Mesh:
-                        master.Clear(true);
-                        MeshInstatiating();
-                        break;
+                    master.Clear(true);
+                    MeshInstatiating();
+                    break;
 
                     case Using.None:
-                        DestroyImmediate(master.meshGO);
-                        master.Clear(true);
-                        break;
+                    DestroyImmediate(master.meshGO);
+                    master.Clear(true);
+                    break;
                 }
 
                 if (master.usingOfSpline != Using.None)
                 {
-
                     GUILayout.BeginVertical("box");
                     GUILayout.Space(5);
 
@@ -88,13 +90,16 @@ namespace BezierMaster
                     if (!master.autoUpdate)
                     {
                         if (GUILayout.Button("Update"))
+                        {
                             master.UpdateMaster(true);
+                        }
                     }
                     else
+                    {
                         master.UpdateMaster(false);
+                    }
 
                     GUILayout.Space(5);
-
 
                     if (GUILayout.Button("Detach Objects"))
                     {
@@ -108,7 +113,6 @@ namespace BezierMaster
             }
             GUILayout.EndVertical();
 
-
             GUILayout.BeginVertical("box");
             master.showAnimationOptions = EditorGUILayout.Foldout(master.showAnimationOptions, "Animation");
             if (master.showAnimationOptions)
@@ -116,20 +120,22 @@ namespace BezierMaster
                 Animation();
             }
             GUILayout.EndVertical();
-
         }
 
         private void CurveEditor()
         {
             if (spline == null)
+            {
                 spline = master.spline;
+            }
 
             EditorGUI.BeginChangeCheck();
 
             if (GUILayout.Button("Add Curve"))
             {
                 Undo.RecordObject(spline, "Add Curve");
-                spline.AddCurve();
+                spline.AddCurve(selectedIndex);
+                selectedIndex = -1;
                 EditorUtility.SetDirty(spline);
             }
             if (GUILayout.Button("Remove Curve"))
@@ -163,7 +169,9 @@ namespace BezierMaster
             GUILayout.EndVertical();
 
             if (selectedIndex >= 0 && selectedIndex < spline.ControlPointCount)
+            {
                 DrawSelectedPointInspector();
+            }
             else
             {
                 GUILayout.BeginVertical("box");
@@ -187,7 +195,6 @@ namespace BezierMaster
                 Undo.RecordObject(spline, "Move Point");
                 EditorUtility.SetDirty(spline);
                 spline.SetControlPoint(selectedIndex, point);
-
             }
             GUILayout.Space(5);
 
@@ -214,8 +221,9 @@ namespace BezierMaster
                 spline.zRotationAtPoint[index] = zRotation;
 
                 if (spline.Loop && (index == spline.zRotationAtPoint.Length - 1 || index == 0))
+                {
                     spline.zRotationAtPoint[index] = spline.zRotationAtPoint[0] = zRotation;
-
+                }
             }
             GUILayout.Space(5);
 
@@ -230,14 +238,13 @@ namespace BezierMaster
                 spline.scaleFactor3d[index] = scale;
 
                 if (spline.Loop && (index == spline.zRotationAtPoint.Length - 1 || index == 0))
+                {
                     spline.scaleFactor3d[index] = spline.scaleFactor3d[0] = scale;
-
+                }
             }
-
 
             GUILayout.Space(5);
             GUILayout.EndVertical();
-
         }
 
         private void ObjectsInstantiating()
@@ -328,8 +335,9 @@ namespace BezierMaster
                     master.offsetRandomMaximum = MaxOffset;
 
                     if (master.autoUpdate)
+                    {
                         master.UpdateMaster(true);
-
+                    }
                 }
 
                 EditorGUI.BeginChangeCheck();
@@ -341,7 +349,9 @@ namespace BezierMaster
                     master.rotationRandomMaximum = MaxRotation;
 
                     if (master.autoUpdate)
+                    {
                         master.UpdateMaster(true);
+                    }
                 }
                 EditorGUI.BeginChangeCheck();
                 Vector3 MaxScale = EditorGUILayout.Vector3Field("Max Scale Offset", master.scaleRandomMaximum);
@@ -351,7 +361,9 @@ namespace BezierMaster
                     EditorUtility.SetDirty(master);
                     master.scaleRandomMaximum = MaxScale;
                     if (master.autoUpdate)
+                    {
                         master.UpdateMaster(true);
+                    }
                 }
 
                 EditorGUI.indentLevel -= 1;
@@ -368,20 +380,19 @@ namespace BezierMaster
             GUILayout.Space(5);
             master.meshType = (MeshType)EditorGUILayout.Popup("Mesh Type", (int)master.meshType, new string[] { "Line", "Cylinder", "Tube" });
 
-
             switch (master.meshType)
             {
                 case MeshType.Line:
-                    CreateLineMesh();
-                    break;
+                CreateLineMesh();
+                break;
 
                 case MeshType.Cylinder:
-                    CreateCylinderMesh();
-                    break;
+                CreateCylinderMesh();
+                break;
 
                 case MeshType.Tube:
-                    CreateTubeMesh();
-                    break;
+                CreateTubeMesh();
+                break;
             }
 
             GUILayout.Space(5);
@@ -393,9 +404,6 @@ namespace BezierMaster
             {
                 EditorGUI.indentLevel += 1;
 
-
-
-
                 EditorGUI.BeginChangeCheck();
                 Vector3 MaxOffset = EditorGUILayout.Vector3Field("Max Possition Offset", master.offsetRandomMaximum);
                 if (EditorGUI.EndChangeCheck())
@@ -406,7 +414,6 @@ namespace BezierMaster
 
                     if (master.autoUpdate)
                         master.UpdateMaster(true);
-
                 }
 
                 EditorGUI.BeginChangeCheck();
@@ -430,7 +437,6 @@ namespace BezierMaster
                     if (master.autoUpdate)
                         master.UpdateMaster(true);
                 }
-
 
                 EditorGUI.indentLevel -= 1;
             }
@@ -625,7 +631,6 @@ namespace BezierMaster
                 master.WidthSegmentsCount = widthSegmentsCount;
             }
 
-
             GUILayout.Space(5);
 
             EditorGUI.BeginChangeCheck();
@@ -643,7 +648,6 @@ namespace BezierMaster
             meshCreator.radius2 = master.radius2;
             meshCreator.textureOrientation = textureOrientation;
 
-
             master.meshCreator = meshCreator;
         }
 
@@ -657,7 +661,9 @@ namespace BezierMaster
             EditorGUILayout.PropertyField(list);
 
             if (list.arraySize == 0)
+            {
                 list.arraySize = 1;
+            }
 
             if (list.GetArrayElementAtIndex(0) == null)
             {
@@ -672,12 +678,10 @@ namespace BezierMaster
             {
                 EditorGUI.indentLevel += 1;
 
-
                 for (int i = 0; i < list.arraySize; i++)
+                {
                     EditorGUILayout.PropertyField(list.GetArrayElementAtIndex(i), new GUIContent("Object " + (i + 1)));
-
-
-
+                }
 
                 EditorGUILayout.PropertyField(list.FindPropertyRelative("Array.size"));
                 EditorGUI.indentLevel -= 1;
@@ -691,7 +695,9 @@ namespace BezierMaster
         private void OnSceneGUI()
         {
             if (spline == null)
+            {
                 spline = master.spline;
+            }
 
             handleTransform = spline.transform;
 
@@ -712,8 +718,6 @@ namespace BezierMaster
                 Handles.DrawBezier(p0, p3, p1, p2, Color.white, null, 2f);
                 p0 = p3;
             }
-
-            
         }
 
         private static Color[] modeColors = {
@@ -728,20 +732,21 @@ namespace BezierMaster
             float size = HandleUtility.GetHandleSize(point);
 
             if (index % 3 == 0)
+            {
                 size *= (handleSize * 1.5f);
+            }
             else
+            {
                 size *= handleSize;
+            }
 
             EditorGUI.BeginChangeCheck();
 
             Handles.color = modeColors[(int)spline.GetControlPointMode(index)];
 
-
-
             if (Handles.Button(point, handleRotation, size, size, Handles.SphereHandleCap))
             {
                 selectedIndex = index;
-
             }
 
             if (index == selectedIndex)
@@ -749,13 +754,9 @@ namespace BezierMaster
                 point = Handles.DoPositionHandle(point, handleRotation);
                 if (EditorGUI.EndChangeCheck())
                 {
-
-
                     Undo.RecordObject(spline, "Move Point");
                     EditorUtility.SetDirty(spline);
                     spline.SetControlPoint(index, handleTransform.InverseTransformPoint(point));
-
-
                 }
                 Repaint();
             }
@@ -777,4 +778,3 @@ namespace BezierMaster
         }
     }
 }
-    

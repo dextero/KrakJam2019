@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using BezierMaster.MeshesCreating;
 using UnityEditor;
-using BezierMaster.MeshesCreating;
-
+using UnityEngine;
 
 namespace BezierMaster
 {
@@ -19,7 +16,6 @@ namespace BezierMaster
         Cylinder,
         Tube
     }
-
 
     [SelectionBase]
     [RequireComponent(typeof(BezierSpline))]
@@ -40,8 +36,6 @@ namespace BezierMaster
         public Using usingOfSpline;
         public MeshType meshType;
 
-
-
         //
         //   -----    objects creating variables   -----
         //
@@ -49,31 +43,31 @@ namespace BezierMaster
         private int objectsCount = 5;
         public int ObjectsCount
         {
-
             get
             {
                 return objectsCount;
             }
             set
             {
-                if (value > 1 && value < 300)
+                if (value > 1 && value < 30000)
+                {
                     objectsCount = value;
+                }
             }
         }
 
         [SerializeField]
         public GameObject[] objectsPrefabs = new GameObject[0];
-        int objectN = 0;
+        private int objectN = 0;
 
         [SerializeField]
-        int[] objectsRandomIndexes;
+        private        int[] objectsRandomIndexes;
         [SerializeField]
-        Vector3[] objectRandomScales;
+        private        Vector3[] objectRandomScales;
         [SerializeField]
-        Vector3[] objectRandomOffsets;
+        private        Vector3[] objectRandomOffsets;
         [SerializeField]
-        Quaternion[] objectRandomRotation;
-
+        private        Quaternion[] objectRandomRotation;
 
         public Vector3 scaleRandomMaximum = Vector3.one;
         public Vector3 offsetRandomMaximum = Vector3.one;
@@ -82,7 +76,7 @@ namespace BezierMaster
         [SerializeField]
         public GameObject[] instantiatedObjects = new GameObject[0];
         [SerializeField]
-        Vector3[] objectsScales;
+        private        Vector3[] objectsScales;
 
         public bool ApplyRotationX = false;
         public bool ApplyRotationY = false;
@@ -102,8 +96,10 @@ namespace BezierMaster
             }
             set
             {
-                if (value > 2 && value < 300)
+                if (value > 2 && value < 30000)
+                {
                     lenghtSegmentsCount = value;
+                }
             }
         }
 
@@ -117,8 +113,10 @@ namespace BezierMaster
             }
             set
             {
-                if (value > 2 && value < 300)
+                if (value > 2 && value < 30000)
+                {
                     widhtSegmentsCount = value;
+                }
             }
         }
 
@@ -148,7 +146,9 @@ namespace BezierMaster
         public void Reset()
         {
             if (spline == null)
+            {
                 spline = GetComponent<BezierSpline>();
+            }
 
             showCurveEditor = true;
             showObjectsOptions = true;
@@ -189,11 +189,15 @@ namespace BezierMaster
         public void Clear(bool destroy)
         {
             if (destroy)
+            {
                 for (int i = 0; i < instantiatedObjects.Length; i++)
                 {
                     if (instantiatedObjects[i] != null)
+                    {
                         DestroyImmediate(instantiatedObjects[i]);
+                    }
                 }
+            }
 
             instantiatedObjects = new GameObject[objectsCount];
             objectsRandomIndexes = new int[objectsCount];
@@ -201,7 +205,6 @@ namespace BezierMaster
             objectRandomScales = new Vector3[objectsCount];
             objectRandomOffsets = new Vector3[objectsCount];
             objectRandomRotation = new Quaternion[objectsCount];
-
         }
 
         public void UpdateMaster(bool updateRandom)
@@ -209,15 +212,17 @@ namespace BezierMaster
             switch (usingOfSpline)
             {
                 case Using.Mesh:
-                    UpdateMesh();
-                    break;
+                UpdateMesh();
+                break;
                 case Using.Objects:
-                    UpdateObjects(updateRandom);
-                    break;
+                UpdateObjects(updateRandom);
+                break;
             }
 
             if (updateRandom && randomise)
+            {
                 InitRandom();
+            }
 
             //Debug.Log("update!");
         }
@@ -227,33 +232,31 @@ namespace BezierMaster
             switch (usingOfSpline)
             {
                 case Using.Mesh:
-                    meshGO.transform.parent = null;
-                    meshGO = null;
-                    break;
+                meshGO.transform.parent = null;
+                meshGO = null;
+                break;
 
                 case Using.Objects:
-                    var parent = new GameObject("Parent").transform;
-                    parent.position = transform.position;
-                    parent.rotation = transform.rotation;
+                var parent = new GameObject("Parent").transform;
+                parent.position = transform.position;
+                parent.rotation = transform.rotation;
 
-                    for (int i = 0; i < instantiatedObjects.Length; i++)
-                    {
-                        instantiatedObjects[i].transform.SetParent(parent);
-                    }
+                for (int i = 0; i < instantiatedObjects.Length; i++)
+                {
+                    instantiatedObjects[i].transform.SetParent(parent);
+                }
 
-                    Clear(false);
-                    break;
+                Clear(false);
+                break;
             }
-
-
         }
 
-
-
-        void UpdateObjects(bool updateRandom)
+        private void UpdateObjects(bool updateRandom)
         {
             if (objectsPrefabs.Length == 0 || objectsPrefabs[0] == null)
+            {
                 return;
+            }
 
             if (instantiatedObjects == null || instantiatedObjects.Length != objectsCount || instantiatedObjects[0] == null || updateRandom)
             {
@@ -264,7 +267,9 @@ namespace BezierMaster
                     float t = i / (float)(objectsCount - 1);
 
                     if (spline.Loop)
+                    {
                         t = i / (float)(objectsCount);
+                    }
 
                     instantiatedObjects[i] = Instantiate(GetObject(), transform.TransformPoint(spline.GetPoint(t)), GetRotation(i, t), transform) as GameObject;
 
@@ -280,16 +285,16 @@ namespace BezierMaster
 
                     instantiatedObjects[i].name += " (" + (i + 1) + ")";
                 }
-
             }
-
             else if (instantiatedObjects.Length > 0 && instantiatedObjects[0] != null)
             {
                 for (int i = 0; i < objectsCount; i++)
                 {
                     float t = i / (float)(objectsCount - 1);
                     if (spline.Loop)
+                    {
                         t = i / (float)(objectsCount);
+                    }
 
                     instantiatedObjects[i].transform.position = transform.TransformPoint(spline.GetPoint(t)) + objectRandomOffsets[i];
                     instantiatedObjects[i].transform.localScale = GetScale(i, t);
@@ -298,10 +303,9 @@ namespace BezierMaster
                     // Debug.DrawLine(transform.TransformPoint(spline.GetPoint(t)), transform.TransformPoint(spline.GetPoint(t)) + spline.GetDirection(t));
                 }
             }
-
         }
 
-        void UpdateMesh()
+        private void UpdateMesh()
         {
             if (meshGO == null)
             {
@@ -312,7 +316,6 @@ namespace BezierMaster
                 meshGO.transform.SetParent(transform);
                 var mr = meshGO.AddComponent<MeshRenderer>();
                 mr.material = new Material(Shader.Find("Diffuse"));
-
             }
             mesh = meshCreator.CreateMesh();
 
@@ -321,14 +324,14 @@ namespace BezierMaster
 
             var mf = meshGO.GetComponent<MeshFilter>();
             if (!mf)
+            {
                 mf = meshGO.AddComponent<MeshFilter>();
+            }
 
             mf.mesh = mesh;
-
-
         }
 
-        Quaternion GetRotation(int i, float t)
+        private Quaternion GetRotation(int i, float t)
         {
             Quaternion rotation;
             if (ApplyRotationX || ApplyRotationY || ApplyRotationZ)
@@ -339,23 +342,29 @@ namespace BezierMaster
                                                      ApplyRotationZ ? rotation.eulerAngles.z + spline.GetRotationZ(t) : 0);
             }
             else
+            {
                 rotation = Quaternion.identity;
+            }
 
             rotation = rotation * addRotation;
             rotation = transform.rotation * rotation;
 
             if (randomise)
+            {
                 rotation *= objectRandomRotation[i];
+            }
 
             return rotation;
         }
 
-        Vector3 GetScale(int i, float t)
+        private Vector3 GetScale(int i, float t)
         {
             Vector3 scale = new Vector3(objectsScales[i].x * spline.GetScale(t).x, objectsScales[i].y * spline.GetScale(t).y, objectsScales[i].z * spline.GetScale(t).z);
 
             if (randomise)
+            {
                 scale += objectRandomScales[i];
+            }
 
             return scale;
         }
@@ -373,26 +382,31 @@ namespace BezierMaster
             }
         }
 
-        GameObject GetObject()
+        private GameObject GetObject()
         {
             if (randomise)
             {
                 if (objectsPrefabs.Length == 0 || objectsPrefabs[0] == null)
+                {
                     return null;
+                }
 
                 if (objectN > objectsRandomIndexes.Length - 1)
+                {
                     objectN = 0;
+                }
 
                 return objectsPrefabs[objectsRandomIndexes[objectN++]];
             }
             else
             {
                 if (objectN > objectsPrefabs.Length - 1)
+                {
                     objectN = 0;
+                }
 
                 return objectsPrefabs[objectN++];
             }
-
         }
 
 #if UNITY_EDITOR
@@ -411,7 +425,9 @@ namespace BezierMaster
         public Vector3[] GetPath(int pointsCount)
         {
             if (spline == null || pointsCount <= 0)
+            {
                 return null;
+            }
 
             Vector3[] path = new Vector3[pointsCount];
 
@@ -420,7 +436,9 @@ namespace BezierMaster
                 float t = i / (float)(pointsCount - 1);
 
                 if (spline.Loop)
+                {
                     t = i / (float)(pointsCount);
+                }
 
                 path[i] = transform.TransformPoint(spline.GetPoint(t));
             }
