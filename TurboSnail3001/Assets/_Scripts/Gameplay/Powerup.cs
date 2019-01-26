@@ -37,7 +37,7 @@ public class Powerup : MonoBehaviour
             }
             case PowerupType.Finish:
             {
-                GameController.Instance.Finish();
+                GameController.Instance.Finish(FinishResult.Finished);
                 break;
             }
 

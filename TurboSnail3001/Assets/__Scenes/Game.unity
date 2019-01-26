@@ -2001,6 +2001,11 @@ PrefabInstance:
       propertyPath: _Settings.Speed
       value: 120
       objectReference: {fileID: 0}
+    - target: {fileID: 4651932149852078376, guid: 43c02cdca06a78cfdaeb555541fdc039,
+        type: 3}
+      propertyPath: _EndOfTheWorldY
+      value: -100
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43c02cdca06a78cfdaeb555541fdc039, type: 3}
 --- !u!114 &8845205404515152565 stripped

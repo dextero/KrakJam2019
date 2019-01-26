@@ -5,6 +5,12 @@ using TurboSnail3001;
 using TurboSnail3001.Input;
 using UnityEngine;
 
+public enum FinishResult
+{
+    Finished,
+    Failed,
+}
+
 [RequireComponent(typeof(GotoScene))]
 public class GameController : MonoBehaviour
 {
@@ -32,16 +38,22 @@ public class GameController : MonoBehaviour
     #endregion Public Variables
 
     #region Public Methods
-    public int CalculateScore() {
-        const float MAX_SCORE = 1000000.0f;
-        const float MAX_EXPECTED_TIME_S = 120.0f;
+    public int CalculateScore(FinishResult result) {
+        switch (result) {
+        case FinishResult.Finished:
+            const float MAX_SCORE = 1000000.0f;
+            const float MAX_EXPECTED_TIME_S = 120.0f;
 
-        float timeElapsed = Time.fixedTime - _StartTime;
-        float lerpFactor = timeElapsed / MAX_EXPECTED_TIME_S;
-        return (int) Mathf.Lerp(MAX_SCORE, 0.0f, Mathf.Clamp01(lerpFactor));
+            float timeElapsed = Time.fixedTime - _StartTime;
+            float lerpFactor = timeElapsed / MAX_EXPECTED_TIME_S;
+            return (int) Mathf.Lerp(MAX_SCORE, 0.0f, Mathf.Clamp01(lerpFactor));
+        case FinishResult.Failed:
+        default:
+            return 0;
+        }
     }
-    public void Finish() { 
-        Target.Save.Score = CalculateScore();
+    public void Finish(FinishResult result) { 
+        Target.Save.Score = CalculateScore(result);
         NicknameInputOverlay.SetActive(true);
         NicknamePromptMessage.SetText($"Your score: {Target.Save.Score}");
     }
