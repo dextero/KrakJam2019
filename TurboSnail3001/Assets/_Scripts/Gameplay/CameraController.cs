@@ -18,7 +18,7 @@
         #region Unity Methods
         private void Awake()
         {
-            _Target = GameController.Instance.Target;
+            _Target = GameController.Instance.Target.transform;
             _Transform         = GetComponent<Transform>();
 
             _TranslationOffset = _Transform.position - _Target.position;
