@@ -1,5 +1,6 @@
 ﻿using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
@@ -22,18 +23,21 @@ public class Menu : MonoBehaviour
     #endregion Unity Methods
 
     #region Private Methods
-    private void OnStart()
+    private static void OnStart()
     {
+        SceneManager.LoadScene(Settings.Instance.GameplaySceneIndex);
     }
 
-    private void OnHighscore()
+    private static void OnHighscore()
     {
+        SceneManager.LoadScene(Settings.Instance.HighscoreSceneIndex);
     }
 
-    private void OnCalibration()
+    private static void OnCalibration()
     {
+        SceneManager.LoadScene(Settings.Instance.CalibrationSceneIndex);
     }
-    private void OnExit()
+    private static void OnExit()
     {
         Application.Quit();
     }

@@ -8,27 +8,26 @@ namespace TurboSnail3001.Input
     using Sirenix.OdinInspector;
     using UnityEngine;
 
-    public class HardwareController : MonoBehaviour, IController
+    public class HardwareController : MonoBehaviour
     {
         #region Public Variables
         public float State => _State;
-        #endregion Public Variables
+        public int Frequency => _Frequency;
 
-        #region Inspector Variables
         [Tooltip("The serial port where the Arduino is connected"), FoldoutGroup("Settings")]
         public string Port = "COM4";
 
         [Tooltip("The baudrate of the serial port"), FoldoutGroup("Settings")]
         public int Baudrate = 9600;
 
-        [Tooltip("Controller frequency, when the hand is close to the controller")]
-        [SerializeField, FoldoutGroup("Settings")]
-        private int _MinFrequency = 1700000;
+        [Tooltip("Controller frequency, when the hand is close to the controller"), FoldoutGroup("Settings")]
+        public int MinFrequency = 1700000;
 
-        [Tooltip("Controller frequency, when the hand is far away from the controller")]
-        [SerializeField, FoldoutGroup("Settings")]
-        private int _MaxFrequency = 1800000;
+        [Tooltip("Controller frequency, when the hand is far away from the controller"), FoldoutGroup("Settings")]
+        public int MaxFrequency = 1800000;
+        #endregion Public Variables
 
+        #region Inspector Variables
         [SerializeField, FoldoutGroup("Settings")]
         private int _CutoffFrequency = 1200000;
         #endregion Inspector Variables
@@ -45,8 +44,10 @@ namespace TurboSnail3001.Input
 
         private void OnDisable()
         {
+            _ThreadRun = false;
+            _Thread.Join();
+
             _Stream.Close();
-            _Thread.Abort();
         }
 
         private void Update()
@@ -54,7 +55,7 @@ namespace TurboSnail3001.Input
 #if UNITY_EDITOR
             Sirenix.Utilities.Editor.GUIHelper.RequestRepaint();
 #endif
-            _State = 1.0f - Mathf.Clamp01((_Frequency - _MinFrequency) / (float)(_MaxFrequency - _MinFrequency));
+            _State = 1.0f - Mathf.Clamp01((_Frequency - MinFrequency) / (float)(MaxFrequency - MinFrequency));
         }
         #endregion Unity Methods
 
@@ -64,12 +65,13 @@ namespace TurboSnail3001.Input
 
         [ShowInInspector, ReadOnly, FoldoutGroup("Preview"), ProgressBar(0.0f, 1.0f)] private float _State;
         private int _Frequency;
+        private bool _ThreadRun = true;
         #endregion Private Variables
 
         #region Private Methods
         private void Read()
         {
-            while (true)
+            while (_ThreadRun)
             {
                 try
                 {

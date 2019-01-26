@@ -1,21 +1,14 @@
-﻿using System;
-
-namespace TurboSnail3001.Input
+﻿namespace TurboSnail3001.Input
 {
     using Sirenix.OdinInspector;
     using UnityEngine;
 
-    public class InputController : SerializedMonoBehaviour
+    public class InputController : MonoBehaviour
     {
         #region Public Types
-        public enum InputType
-        {
-            Hardware,
-            Mockup
-        }
         public class Controller
         {
-            public IController Reference;
+            public HardwareController Reference;
 
             public float Position;
             public float Velocity;
@@ -33,52 +26,23 @@ namespace TurboSnail3001.Input
 
         #region Inspector Variables
         [SerializeField, FoldoutGroup("References")]
-        private IController _LeftHardware;
+        private HardwareController _LeftHardware;
 
         [SerializeField, FoldoutGroup("References")]
-        private IController _RightHardware;
-
-        [SerializeField, FoldoutGroup("References")]
-        private IController _LeftMockup;
-
-        [SerializeField, FoldoutGroup("References")]
-        private IController _RightMockup;
-
-        [SerializeField, FoldoutGroup("Settings")]
-        private InputType _Type;
+        private HardwareController _RightHardware;
         #endregion Inspector Variables
 
         #region Unity Methods
         private void Awake()
         {
-            /* select controllers */
-            switch (_Type)
-            {
-                case InputType.Hardware:
-                {
-                    _LeftController.Reference = _LeftHardware;
-                    _RightController.Reference = _RightHardware;
+            _LeftController.Reference = _LeftHardware;
+            _RightController.Reference = _RightHardware;
 
-                    _LeftMockup.gameObject.SetActive(false);
-                    _RightMockup.gameObject.SetActive(false);
-                    break;
-                }
-                case InputType.Mockup:
-                {
-                    _LeftController.Reference  = _LeftMockup;
-                    _RightController.Reference = _RightMockup;
-
-                    _LeftHardware.gameObject.SetActive(false);
-                    _RightHardware.gameObject.SetActive(false);
-                    break;
-                }
-                default:
-                throw new ArgumentOutOfRangeException();
-            }
-
-            /* enable selected */
-            _LeftController.Reference.gameObject.SetActive(true);
-            _RightController.Reference.gameObject.SetActive(true);
+            /* read settings */
+            _LeftHardware.MinFrequency = Settings.Instance.LeftControllerSettings.MinFrequency;
+            _LeftHardware.MaxFrequency = Settings.Instance.LeftControllerSettings.MaxFrequency;
+            _RightHardware.MinFrequency = Settings.Instance.RightControllerSettings.MinFrequency;
+            _RightHardware.MaxFrequency = Settings.Instance.RightControllerSettings.MaxFrequency;
         }
         private void FixedUpdate()
         {

@@ -161,7 +161,6 @@ GameObject:
   - component: {fileID: 431084790108779862}
   - component: {fileID: 8952503310525631923}
   - component: {fileID: 4651932149852078376}
-  - component: {fileID: 4069149469835759599}
   m_Layer: 0
   m_Name: Snail
   m_TagString: Untagged
@@ -217,6 +216,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _Steering: {fileID: 1288339375818402226}
   _Drivetrain: {fileID: 1324529746332309326}
+  _DriftThreshold: 10
+  _KanseiDorifto: {fileID: 0}
 --- !u!114 &4651932149852078376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -232,19 +233,6 @@ MonoBehaviour:
   _Input: {fileID: 0}
   _Speed: 65
   _RotateSpeed: 40
---- !u!65 &4069149469835759599
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4201437164268598163}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.06510464, y: 0.119249135, z: 0.08231312}
-  m_Center: {x: 0, y: 0, z: 0.028619047}
 --- !u!1 &9195304898657854057
 GameObject:
   m_ObjectHideFlags: 0
