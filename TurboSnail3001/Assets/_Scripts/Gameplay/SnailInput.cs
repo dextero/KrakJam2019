@@ -75,9 +75,15 @@ namespace TurboSnail3001
             _Snail.Save.Frames.Add(frame);
 
             /* apply forces */
-            _Rigidbody.AddForceAtPosition(_Transform.forward * _Settings.Speed * velocity, _Snail.Drivetrain.position);
-            _Rigidbody.AddTorque(transform.up * left * _Settings.RotateSpeed);
-            _Rigidbody.AddTorque(-transform.up * right * _Settings.RotateSpeed);
+            if (velocity > 0.0f) {
+                _Rigidbody.AddForceAtPosition(_Transform.forward * _Settings.Speed * velocity, _Snail.Drivetrain.position);
+            }
+            if (left > 0.0f) {
+                _Rigidbody.AddTorque(transform.up * left * _Settings.RotateSpeed);
+            }
+            if (right > 0.0f) {
+                _Rigidbody.AddTorque(-transform.up * right * _Settings.RotateSpeed);
+            }
         }
         #endregion Unity Methods
 
