@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using TMPro;
 using TurboSnail3001;
 using UnityEngine;
 
@@ -20,6 +21,7 @@ public class GhostSystem : MonoBehaviour
     #region Inspector Variables
     [SerializeField] private GameObject _GhostPrefab;
     [SerializeField] private Material _GhostMaterial;
+    [SerializeField] private GameObject _NamePlate;
     [SerializeField] private string _GhostLayer;
     [SerializeField] private int _MaxGhosts = 3;
     #endregion Inspector Variables
@@ -44,6 +46,11 @@ public class GhostSystem : MonoBehaviour
     {
         var ghost = Instantiate(_GhostPrefab);
         ghost.name = "Ghost";
+
+        var nameplate = Instantiate(_NamePlate);
+        nameplate.transform.SetParent(ghost.transform);
+        var text = nameplate.GetComponentInChildren<TextMeshProUGUI>();
+        text.text = save.Nickname;
 
         /* remove all player scripts */
         var snailInput = ghost.GetComponent<SnailInput>();
