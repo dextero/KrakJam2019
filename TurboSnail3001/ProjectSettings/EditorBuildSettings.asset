@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/__Scenes/Highscore.unity
     guid: 65c6e5a395f91074f98b5865d2bc58db
+  - enabled: 1
+    path: Assets/__Scenes/DifficultySelectMenu.unity
+    guid: 2547ecadca9da81ec807e7bd13cba180
   m_configObjects: {}

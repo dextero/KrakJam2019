@@ -8,5 +8,6 @@ public class GotoScene : MonoBehaviour
     public void GotoGame() { SceneManager.LoadScene(Settings.Instance.GameplaySceneIndex); }
     public void GotoHighscore() { SceneManager.LoadScene(Settings.Instance.HighscoreSceneIndex); }
     public void GotoCalibration() { SceneManager.LoadScene(Settings.Instance.CalibrationSceneIndex); }
+    public void GotoDifficultySelectMenu() { SceneManager.LoadScene(Settings.Instance.DifficultySelectMenuSceneIndex); }
     #endregion Public Methods
 }

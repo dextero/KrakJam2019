@@ -53,3 +53,4 @@ MonoBehaviour:
   MenuSceneIndex: 0
   HighscoreSceneIndex: 3
   CalibrationSceneIndex: 1
+  DifficultySelectMenuSceneIndex: 4

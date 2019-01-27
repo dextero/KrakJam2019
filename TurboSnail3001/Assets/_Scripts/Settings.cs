@@ -43,6 +43,7 @@ public class Settings : MonoBehaviour
     [FoldoutGroup("Scenes")] public int MenuSceneIndex;
     [FoldoutGroup("Scenes")] public int HighscoreSceneIndex;
     [FoldoutGroup("Scenes")] public int CalibrationSceneIndex;
+    [FoldoutGroup("Scenes")] public int DifficultySelectMenuSceneIndex;
     #endregion Public Variables
 
     #region Unity Methods

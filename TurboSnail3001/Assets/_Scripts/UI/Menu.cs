@@ -25,7 +25,7 @@ public class Menu : MonoBehaviour
     #region Private Methods
     private static void OnStart()
     {
-        SceneManager.LoadScene(Settings.Instance.GameplaySceneIndex);
+        SceneManager.LoadScene(Settings.Instance.DifficultySelectMenuSceneIndex);
     }
 
     private static void OnHighscore()

@@ -8,6 +8,7 @@ using UnityEngine;
 [Serializable]
 public class Save
 {
+    public TrackDifficulty Track;
     public string Nickname;
     public int Score;
 

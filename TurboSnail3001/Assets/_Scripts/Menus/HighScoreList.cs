@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -33,9 +34,9 @@ public class HighScoreList : MonoBehaviour
         return entry;
     }
 
-    private GameObject MakeHighScoreListEntry(string nickname, int score)
+    private GameObject MakeHighScoreListEntry(Save save)
     {
-        return MakeHighScoreListEntryWithText($"{nickname}: {score}");
+        return MakeHighScoreListEntryWithText($"{save.Nickname}: {save.Score} ({save.Track})");
     }
 
     private void Reload()
@@ -49,7 +50,7 @@ public class HighScoreList : MonoBehaviour
         var sorted = entries.Saves.OrderByDescending(x => x.Score);
         foreach (var entry in sorted)
         {
-            AppendEntry(MakeHighScoreListEntry(entry.Nickname, entry.Score));
+            AppendEntry(MakeHighScoreListEntry(entry));
         }
     }
     #endregion Private Methods
