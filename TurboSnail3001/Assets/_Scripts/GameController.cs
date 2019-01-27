@@ -75,6 +75,9 @@ public class GameController : MonoBehaviour
         IsRunning = true;
         _StartTime = Time.fixedTime;
     }
+    public void RestartGame() {
+        _GotoScene.GotoGame();
+    }
     public void Finish(FinishResult result) { 
         if (!IsRunning) {
             return;
