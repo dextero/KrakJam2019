@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 
 namespace TurboSnail3001
 {
@@ -16,6 +17,7 @@ namespace TurboSnail3001
         #region Inspector Variables
         [SerializeField] private Transform _Steering;
         [SerializeField] private Transform _Drivetrain;
+        [SerializeField] private List<ParticleSystem> _Burst;
         #endregion Inspector Variables
 
         #region Unity Methods
@@ -31,12 +33,25 @@ namespace TurboSnail3001
         private void Update()
         {
             _Angle = Vector3.SignedAngle(_Transform.forward, _Rigidbody.velocity, Vector3.up);
+
+            if(Mathf.Abs(_Angle) < 5) { _Lock = false; }
+            if(Mathf.Abs(_Angle) > 30 && !_Lock)
+            {
+                foreach(var burst in _Burst)
+                {
+                    if(burst == null) { continue; }
+                    burst.Play();
+                }
+                _Lock = true;
+            }
         }
         #endregion Unity Methods
 
         #region Private Variables
         private Transform _Transform;
         private Rigidbody _Rigidbody;
+        private bool _Lock = false;
+
 
         [ShowInInspector, ReadOnly] private float _Angle;
         #endregion Private Variables

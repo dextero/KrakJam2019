@@ -46,6 +46,7 @@ public class GhostSystem : MonoBehaviour
     {
         var ghost = Instantiate(_GhostPrefab);
         ghost.name = "Ghost";
+        Destroy(ghost.transform.Find("Particles").gameObject);
 
         var nameplate = Instantiate(_NamePlate);
         nameplate.transform.SetParent(ghost.transform);

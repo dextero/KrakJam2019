@@ -110,7 +110,7 @@ namespace TurboSnail3001
             if (_Transform.position.y < _EndOfTheWorldY) {
                 GameController.Instance.Finish(FinishResult.Failed);
             }
-
+            
             _DriftOverlay.UpdateOverlay(_Transform.forward, _Rigidbody.velocity);
         }
         #endregion Unity Methods
