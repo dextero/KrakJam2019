@@ -55,7 +55,7 @@ namespace TurboSnail3001
                 GetComponent<SnailInput>()._Bang.Play();
 
                 int x = 0;
-                while(Random.Range(0.0f, 1.0f) < 0.5f)
+                while(Random.Range(0.0f, 1.0f) < 0.5f && x <= 3)
                 {
                     StartCoroutine(Burst(x));
                     x++;
