@@ -23,6 +23,10 @@ public class GhostInput : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!GameController.Instance.IsRunning) {
+            return;
+        }
+
         if (_Frame < _Save.Frames.Count)
         {
             var frame = _Save.Frames[_Frame];
