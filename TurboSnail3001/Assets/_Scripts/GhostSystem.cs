@@ -36,7 +36,7 @@ public class GhostSystem : MonoBehaviour
         var saves = GameController.Instance.SaveSystem.Load();
         for (int i = 0; i < Math.Min(saves.Saves.Count, _MaxGhosts); ++i)
         {
-            if (saves.Saves[i].TrackIndex == (int) GameController.SelectedTrack) {
+            if (saves.Saves[i].Track == GameController.SelectedTrack) {
                 CreateGhost(saves.Saves[i]);
             }
         }

@@ -104,7 +104,7 @@ public class GameController : MonoBehaviour
 
         _GameController = this;
         IsRunning = false;
-        Target.Save.TrackIndex = (int) SelectedTrack;
+        Target.Save.Track = SelectedTrack;
         Countdown.gameObject.SetActive(true);
     }
     private void Awake() { _GotoScene = GetComponent<GotoScene>(); }
