@@ -96,7 +96,7 @@ public class SaveSystem : MonoBehaviour
             var json = File.ReadAllText(SavesDataPath);
             _SaveData = JsonUtility.FromJson<SaveData>(json);
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             Debug.Log(e);
             _SaveData = new SaveData();
