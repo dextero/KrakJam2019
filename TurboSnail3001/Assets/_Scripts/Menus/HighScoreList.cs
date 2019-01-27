@@ -6,15 +6,31 @@ using UnityEngine;
 public class HighScoreList : MonoBehaviour
 {
     #region Public Methods
-    public void AppendEntry(GameObject entry)
+    public void AppendEntry(GameObject entry, Save save)
     {
-        entry.transform.SetParent(transform, false);
+        switch (save.Track)
+        {
+            case TrackDifficulty.Easy:
+                entry.transform.SetParent(_EasyContainer.transform, false);
+                break;
+            case TrackDifficulty.Hard:
+                entry.transform.SetParent(_HardContainer.transform, false);
+                break;
+            case TrackDifficulty.Todo:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+       
     }
     #endregion Public Methods
 
     #region Inspector Variables
     [SerializeField]
     private GameObject _HighScoreListEntryPrefab;
+
+    [SerializeField] private GameObject _EasyContainer;
+    [SerializeField] private GameObject _HardContainer;
 
     [SerializeField] private SaveSystem _SaveSystem;
     #endregion Inspector Variables
@@ -36,7 +52,7 @@ public class HighScoreList : MonoBehaviour
 
     private GameObject MakeHighScoreListEntry(Save save)
     {
-        return MakeHighScoreListEntryWithText($"{save.Nickname}: {save.Score} ({save.Track})");
+        return MakeHighScoreListEntryWithText($"{save.Nickname}: {save.Score}");
     }
 
     private void Reload()
@@ -50,7 +66,7 @@ public class HighScoreList : MonoBehaviour
         var sorted = entries.Saves.OrderByDescending(x => x.Score);
         foreach (var entry in sorted)
         {
-            AppendEntry(MakeHighScoreListEntry(entry));
+            AppendEntry(MakeHighScoreListEntry(entry), entry);
         }
     }
     #endregion Private Methods
