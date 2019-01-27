@@ -12,6 +12,7 @@ namespace TurboSnail3001
 
         public Transform Steering => _Steering;
         public Transform Drivetrain => _Drivetrain;
+        public float Speed { get { return GetComponent<Rigidbody>().velocity.magnitude; }}
         #endregion Public Variables
 
         #region Inspector Variables

@@ -39,6 +39,8 @@ public class GameController : MonoBehaviour
         }
     }
 
+    public float GameTime { get { return Time.fixedTime - _StartTime; }}
+
     // true if game countdown finished, snail still alive and not finished
     public bool IsRunning { get; set; }
 
