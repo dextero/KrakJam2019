@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 
 namespace TurboSnail3001
@@ -52,6 +53,13 @@ namespace TurboSnail3001
                     burst.Play();
                 }
                 GetComponent<SnailInput>()._Bang.Play();
+
+                int x = 0;
+                while(Random.Range(0.0f, 1.0f) < 0.5f)
+                {
+                    StartCoroutine(Burst(x));
+                    x++;
+                }
                 _Lock = true;
             }
             if(Mathf.Abs(_Angle) < 5) { _Lock = false; }
@@ -73,6 +81,22 @@ namespace TurboSnail3001
         {
             GameController.Instance.SaveSystem.Add(Save);
             GameController.Instance.SaveSystem.Save();
+        }
+
+        private IEnumerator Burst(int x)
+        {
+            yield return new WaitForSeconds(Random.Range(0.4f * x, 0.8f * x));
+
+            GetComponent<SnailInput>()._Bang2.Play();
+            foreach(var burst in _Burst)
+            {
+                if(Random.Range(0.0f, 1.0f) < 0.3f)
+                {
+                    if(burst == null) { continue; }
+                    burst.Play();
+                }
+                       
+            }
         }
         #endregion Private Methods
     }
