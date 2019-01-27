@@ -13,6 +13,10 @@ public class KanseiDorifto : MonoBehaviour
     [SerializeField] private float _TimeThresholdSec = 3.0f;
     #endregion Inspector Variables
 
+    #region Public Variables
+    public bool Activated;
+    #endregion
+
     #region Unity Methods
     private void Awake()
     {
@@ -30,7 +34,13 @@ public class KanseiDorifto : MonoBehaviour
             gameObject.SetActive(false);
         }
 
+        bool wasActive = gameObject.activeSelf;
         gameObject.SetActive(lastFailedCheckTime + _TimeThresholdSec < Time.fixedTime);
+
+        if(!wasActive && gameObject.activeSelf)
+        {
+            Activated = true;
+        }
     }
 
     private void Start()

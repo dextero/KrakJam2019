@@ -20,6 +20,8 @@ namespace TurboSnail3001
         [SerializeField] private SettingsData _Settings;
         [SerializeField] private float _EndOfTheWorldY = -50.0f;
         [SerializeField] private KanseiDorifto _DriftOverlay;
+        [SerializeField] private float _BonusTime = 2.0f;
+        [SerializeField] private float _BonusMultiplier = 2.0f;
         #endregion Inspector Variables
 
         #region Unity Methods
@@ -86,6 +88,18 @@ namespace TurboSnail3001
             /* calculate velocity */
             float velocity = (left + right);
 
+            if(_DriftOverlay.Activated)
+            {
+                _DriftOverlay.Activated = false;
+                _Countdown = _BonusTime;
+            }
+
+            _Countdown -= Time.fixedDeltaTime;
+            if(_Countdown > 0.0f)
+            {
+                velocity *= _BonusMultiplier;
+            }
+
             /* calculate data for the ghost */
             var frame = new GhostSystem.FrameData
             {
@@ -119,6 +133,8 @@ namespace TurboSnail3001
         private Snail _Snail;
         private Rigidbody _Rigidbody;
         private Transform _Transform;
+
+        private float _Countdown;
         #endregion Private Variables
     }
 }
