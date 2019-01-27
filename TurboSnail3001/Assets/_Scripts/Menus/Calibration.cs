@@ -64,7 +64,7 @@ internal class SampleSeries
     #endregion Private Variables
 }
 
-public class Calibration : SerializedMonoBehaviour
+public class Calibration : MonoBehaviour
 {
     #region Inspector Variables
     [SerializeField] private HardwareController LeftController;
@@ -78,7 +78,7 @@ public class Calibration : SerializedMonoBehaviour
     [SerializeField] private TextMeshProUGUI RightMaxValueText;
     [SerializeField] private int NumSamples;
 
-    [SerializeField] private int Collection = 1000;
+    [SerializeField] private float _Time = 5.0f;
     #endregion Inspector Variables
 
     #region Unity Methods
@@ -93,8 +93,8 @@ public class Calibration : SerializedMonoBehaviour
         LeftSamples.Update();
         RightSamples.Update();
 
-        _Count++;
-        if (_Count > Collection)
+        _Counter += Time.deltaTime;
+        if (_Counter > _Time)
         {
             /* setup settings */
             Settings.Instance.LeftControllerSettings.MinFrequency = (int)LeftSamples.MinValue;
@@ -112,6 +112,6 @@ public class Calibration : SerializedMonoBehaviour
     private SampleSeries LeftSamples;
     private SampleSeries RightSamples;
 
-    private int _Count;
+    private float _Counter;
     #endregion Private Variables
 }
