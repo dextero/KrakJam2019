@@ -32,6 +32,12 @@ namespace TurboSnail3001
         [SerializeField] private KanseiDorifto _DriftOverlay;
         [SerializeField] private float _BonusTime = 2.0f;
         [SerializeField] private float _BonusMultiplier = 2.0f;
+
+        [SerializeField] private AudioSource _Drift;
+        [SerializeField] private AudioSource _Staedy;
+        [SerializeField] private AudioSource _Intro;
+
+        [SerializeField] private float _MusicVelocityScale = 90.0f;
         #endregion Inspector Variables
 
         #region Unity Methods
@@ -46,6 +52,9 @@ namespace TurboSnail3001
         public void Start()
         {
             _Snail.Save.Settings = _Settings;
+
+            _Drift.volume = 1.0f;
+            _Staedy.Play();
         }
         private void FixedUpdate()
         {
@@ -104,6 +113,7 @@ namespace TurboSnail3001
             if(_DriftOverlay.Activated)
             {
                 _DriftOverlay.Activated = false;
+                _Drift.Play();
                 _Countdown = _BonusTime;
             }
 
@@ -132,6 +142,8 @@ namespace TurboSnail3001
             {
                 GameController.Instance.Finish(FinishResult.Failed);
             }
+
+            _Staedy.volume = 0.2f + _Rigidbody.velocity.magnitude / _MusicVelocityScale; 
 
             _DriftOverlay.UpdateOverlay(_Transform.forward, _Rigidbody.velocity);
         }
