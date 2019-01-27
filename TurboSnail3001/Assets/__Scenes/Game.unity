@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.35770807, g: 0.25488928, b: 0.11938614, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1911,12 +1911,12 @@ GameObject:
   - component: {fileID: 1750829563}
   - component: {fileID: 1750829562}
   m_Layer: 5
-  m_Name: HUD
+  m_Name: DriftOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1750829562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1924,7 +1924,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1750829561}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a892d2f78d80e23c6a06489c7079381b, type: 3}
   m_Name: 
@@ -2283,6 +2283,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4651932149852078376, guid: 43c02cdca06a78cfdaeb555541fdc039,
+        type: 3}
+      propertyPath: _DriftOverlay
+      value: 
+      objectReference: {fileID: 1750829562}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43c02cdca06a78cfdaeb555541fdc039, type: 3}
 --- !u!114 &8845205404515152565 stripped

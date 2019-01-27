@@ -8,12 +8,29 @@ public class KanseiDorifto : MonoBehaviour
     #region Inspector Variables
     [SerializeField] private GameObject _TrianglePrefab;
     [SerializeField] private int num_triangles = 20;
+    [SerializeField] private float _AngleThreshold = 20.0f;
+    [SerializeField] private float _SpeedThreshold = 0.0f;
+    [SerializeField] private float _TimeThresholdSec = 3.0f;
     #endregion Inspector Variables
 
     #region Unity Methods
     private void Awake()
     {
         _Canvas = GetComponent<Canvas>();
+    }
+
+    private float lastFailedCheckTime = 0.0f;
+
+    public void UpdateOverlay(Vector3 forward,
+                              Vector3 velocity)
+    {
+        if (velocity.sqrMagnitude < _SpeedThreshold * _SpeedThreshold
+                || Vector3.Angle(forward, velocity) < _AngleThreshold) {
+            lastFailedCheckTime = Time.fixedTime;
+            gameObject.SetActive(false);
+        }
+
+        gameObject.SetActive(lastFailedCheckTime + _TimeThresholdSec < Time.fixedTime);
     }
 
     private void Start()

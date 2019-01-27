@@ -19,6 +19,7 @@ namespace TurboSnail3001
         #region Inspector Variables
         [SerializeField] private SettingsData _Settings;
         [SerializeField] private float _EndOfTheWorldY = -50.0f;
+        [SerializeField] private KanseiDorifto _DriftOverlay;
         #endregion Inspector Variables
 
         #region Unity Methods
@@ -109,6 +110,8 @@ namespace TurboSnail3001
             if (_Transform.position.y < _EndOfTheWorldY) {
                 GameController.Instance.Finish(FinishResult.Failed);
             }
+
+            _DriftOverlay.UpdateOverlay(_Transform.forward, _Rigidbody.velocity);
         }
         #endregion Unity Methods
 
