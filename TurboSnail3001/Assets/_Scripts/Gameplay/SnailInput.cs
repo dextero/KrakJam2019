@@ -97,15 +97,20 @@ namespace TurboSnail3001
                 left = input.LeftController.Position;
                 right = input.RightController.Position;
 
-                if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+                if(UnityEngine.Input.anyKey)
                 {
-                    right = 1.0f;
                     left = 0.0f;
-                }
-                if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
-                {
-                    left = 1.0f;
                     right = 0.0f;
+
+                    if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
+                    {
+                        right = 1.0f;
+                      
+                    }
+                    if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
+                    {
+                        left  = 1.0f;
+                    }
                 }
             }
 

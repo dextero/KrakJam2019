@@ -35,11 +35,13 @@ public class GhostInput : MonoBehaviour
             var left = frame.Left;
             var right = frame.Right;
 
-            _Rigidbody.AddForceAtPosition(_Transform.forward * _Save.Settings.Speed * velocity, _Snail.Drivetrain.position);
+            if (!float.IsNaN(_Save.Settings.Speed) && !float.IsNaN(velocity))
+            {
+                _Rigidbody.AddForceAtPosition(_Transform.forward * _Save.Settings.Speed * velocity, _Snail.Drivetrain.position);
 
-            _Rigidbody.AddTorque(transform.up * left   * _Save.Settings.RotateSpeed);
-            _Rigidbody.AddTorque(-transform.up * right * _Save.Settings.RotateSpeed);
-
+                _Rigidbody.AddTorque(transform.up * left   * _Save.Settings.RotateSpeed);
+                _Rigidbody.AddTorque(-transform.up * right * _Save.Settings.RotateSpeed);
+            }
             _Frame++;
         }
     }
