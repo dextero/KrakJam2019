@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using TMPro;
 using TurboSnail3001;
@@ -11,10 +13,19 @@ public enum FinishResult
     Failed,
 }
 
+public enum TrackDifficulty
+{
+    Easy,
+    Hard,
+    Todo,
+}
+
 [RequireComponent(typeof(GotoScene))]
 public class GameController : MonoBehaviour
 {
     #region Public Variables
+    public static TrackDifficulty SelectedTrack = TrackDifficulty.Hard;
+
     public static GameController Instance
     {
         get
@@ -39,6 +50,8 @@ public class GameController : MonoBehaviour
     [FoldoutGroup("References")] public TextMeshProUGUI NicknamePromptMessage;
     [FoldoutGroup("References")] public TMP_InputField NicknameInput;
     [FoldoutGroup("References")] public Countdown Countdown;
+    // NOTE: order of entries MUST match enum Track
+    [FoldoutGroup("Tracks")] public List<GameObject> Tracks;
     #endregion Public Variables
 
     #region Public Methods
@@ -81,6 +94,14 @@ public class GameController : MonoBehaviour
 
     #region Unity Methods
     private void Start() {
+        if ((int) SelectedTrack >= Tracks.Count) {
+            Debug.LogError($"invalid track id: {SelectedTrack} - not on Tracks list");
+            _GotoScene.GotoMenu();
+        }
+        for (int i = 0; i < Tracks.Count; ++i) {
+            Tracks[i].SetActive(i == (int) SelectedTrack);
+        }
+
         _GameController = this;
         IsRunning = false;
         Countdown.gameObject.SetActive(true);
