@@ -36,6 +36,7 @@ namespace TurboSnail3001
         [SerializeField] private AudioSource _Drift;
         [SerializeField] private AudioSource _Staedy;
         [SerializeField] private AudioSource _Intro;
+        [SerializeField] public AudioSource _Bang;
 
         [SerializeField] private float _MusicVelocityScale = 90.0f;
         #endregion Inspector Variables

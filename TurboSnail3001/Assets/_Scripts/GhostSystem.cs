@@ -56,6 +56,8 @@ public class GhostSystem : MonoBehaviour
         text.text = save.Nickname;
 
         /* remove all player scripts */
+        var snail = ghost.GetComponent<Snail>();
+        snail.SnailType = Snail.Type.Ghost;
         var snailInput = ghost.GetComponent<SnailInput>();
         Destroy(snailInput);
 

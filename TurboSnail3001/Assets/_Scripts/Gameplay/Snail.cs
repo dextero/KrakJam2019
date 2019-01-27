@@ -7,7 +7,14 @@ namespace TurboSnail3001
 
     public class Snail : MonoBehaviour
     {
+        public enum Type
+        {
+            Player,
+            Ghost
+        }
+
         #region Public Variables
+        public Type SnailType;
         public Save Save;
 
         public Transform Steering => _Steering;
@@ -33,9 +40,10 @@ namespace TurboSnail3001
 
         private void Update()
         {
+            if(SnailType == Type.Ghost) { return; }
+
             _Angle = Vector3.SignedAngle(_Transform.forward, _Rigidbody.velocity, Vector3.up);
 
-            if(Mathf.Abs(_Angle) < 5) { _Lock = false; }
             if(Mathf.Abs(_Angle) > 30 && !_Lock)
             {
                 foreach(var burst in _Burst)
@@ -43,15 +51,17 @@ namespace TurboSnail3001
                     if(burst == null) { continue; }
                     burst.Play();
                 }
+                GetComponent<SnailInput>()._Bang.Play();
                 _Lock = true;
             }
+            if(Mathf.Abs(_Angle) < 5) { _Lock = false; }
         }
         #endregion Unity Methods
 
         #region Private Variables
         private Transform _Transform;
         private Rigidbody _Rigidbody;
-        private bool _Lock = false;
+        private bool _Lock = true;
 
 
         [ShowInInspector, ReadOnly] private float _Angle;
