@@ -57,20 +57,6 @@ public class GameController : MonoBehaviour
     #endregion Public Variables
 
     #region Public Methods
-    public int CalculateScore(FinishResult result) {
-        switch (result) {
-        case FinishResult.Finished:
-            const float MAX_SCORE = 1000000.0f;
-            const float MAX_EXPECTED_TIME_S = 120.0f;
-
-            float timeElapsed = Time.fixedTime - _StartTime;
-            float lerpFactor = timeElapsed / MAX_EXPECTED_TIME_S;
-            return (int) Mathf.Lerp(MAX_SCORE, 0.0f, Mathf.Clamp01(lerpFactor));
-        case FinishResult.Failed:
-        default:
-            return 0;
-        }
-    }
     public void StartGame() {
         IsRunning = true;
         _StartTime = Time.fixedTime;
@@ -84,9 +70,15 @@ public class GameController : MonoBehaviour
         }
 
         IsRunning = false;
-        Target.Save.Score = CalculateScore(result);
+        Target.Save.Result = result;
+        Target.Save.TimeElapsed = Time.fixedTime - _StartTime;
         NicknameInputOverlay.SetActive(true);
-        NicknamePromptMessage.SetText($"Your score: {Target.Save.Score}");
+
+        if (Target.Save.Finished) {
+            NicknamePromptMessage.SetText($"Congratulations! Your time: {Target.Save.TimeElapsed}");
+        } else {
+            NicknamePromptMessage.SetText($"Your score: {Target.Save.Score}");
+        }
     }
     public void OnNicknameInputFinished()
     {

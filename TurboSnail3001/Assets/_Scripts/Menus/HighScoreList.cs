@@ -52,7 +52,7 @@ public class HighScoreList : MonoBehaviour
 
     private GameObject MakeHighScoreListEntry(Save save)
     {
-        return MakeHighScoreListEntryWithText($"{save.Nickname}: {save.Score}");
+        return MakeHighScoreListEntryWithText(save.ToString());
     }
 
     private void Reload()
@@ -63,7 +63,7 @@ public class HighScoreList : MonoBehaviour
         }
 
         var entries = _SaveSystem.Load();
-        var sorted = entries.Saves.OrderByDescending(x => x.Score);
+        var sorted = entries.Saves.OrderByDescending(x => x);
         foreach (var entry in sorted)
         {
             AppendEntry(MakeHighScoreListEntry(entry), entry);

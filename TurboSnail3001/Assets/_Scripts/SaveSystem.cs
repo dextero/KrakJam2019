@@ -6,19 +6,69 @@ using TurboSnail3001;
 using UnityEngine;
 
 [Serializable]
-public class Save
+public class Save : IComparable
 {
     public TrackDifficulty Track;
     public string Nickname;
-    public int Score;
+    public FinishResult Result;
+    public float TimeElapsed;
 
     public Vector3 StartPosition;
     public Quaternion StartRotation;
 
     public SnailInput.SettingsData Settings;
     public List<GhostSystem.FrameData> Frames = new List<GhostSystem.FrameData>();
-}
 
+    public bool Finished { get { return Result == FinishResult.Finished; } }
+
+    public int Score
+    {
+        get
+        {
+            if (Finished)
+            {
+                const float MAX_SCORE = 1000000.0f;
+                const float MAX_EXPECTED_TIME_S = 120.0f;
+
+                float lerpFactor = TimeElapsed / MAX_EXPECTED_TIME_S;
+                return (int)Mathf.Lerp(MAX_SCORE, 0.0f, Mathf.Clamp01(lerpFactor));
+            }
+            else
+            {
+                return (int)(TimeElapsed * 10.0f);
+            }
+        }
+    }
+
+    public string ToString() {
+        if (Finished) {
+            return $"{Nickname}: * {HUDTime.TimeToString(TimeElapsed)} *";
+        } else {
+            return $"{Nickname}: {Score}";
+        }
+    }
+
+    public int CompareTo(object obj)
+    {
+        Save other = (Save) obj;
+        if (other == null) {
+            throw new NotImplementedException();
+        }
+
+        if (Finished) {
+            if (other.Finished) {
+                // shorter time => better
+                return other.TimeElapsed.CompareTo(TimeElapsed);
+            } else {
+                return 1;
+            }
+        } else if (other.Finished) {
+            return -1;
+        } else {
+            return Score.CompareTo(other.Score);
+        }
+    }
+}
 public class SaveSystem : MonoBehaviour
 {
     #region Public Types
