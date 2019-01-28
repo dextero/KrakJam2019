@@ -547,7 +547,8 @@ PrefabInstance:
       propertyPath: m_subTextObjects.Array.data[1]
       value: 
       objectReference: {fileID: 68320091}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 132341325, guid: d83a23200f08b6f98a9fc37f4c3b45e8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d83a23200f08b6f98a9fc37f4c3b45e8, type: 3}
 --- !u!1 &132341322 stripped
 GameObject:
@@ -970,6 +971,7 @@ GameObject:
   - component: {fileID: 1148810002}
   - component: {fileID: 1148810003}
   - component: {fileID: 1148810004}
+  - component: {fileID: 1148810005}
   m_Layer: 0
   m_Name: Game
   m_TagString: Untagged
@@ -1123,6 +1125,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1148810005
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1148810000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc5967e379071841f9cb0552991dca94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1227588049
 PrefabInstance:
   m_ObjectHideFlags: 0
