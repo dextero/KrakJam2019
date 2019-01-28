@@ -1,0 +1,3 @@
+Flask ~=1.0
+filelock ~=3.0
+jsonschema ~=2.6
