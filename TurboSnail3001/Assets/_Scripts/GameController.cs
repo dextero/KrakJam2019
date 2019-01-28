@@ -25,6 +25,7 @@ public class GameController : MonoBehaviour
 {
     #region Public Variables
     public static TrackDifficulty SelectedTrack = TrackDifficulty.Hard;
+    private static string CurrentNickname = "Anonymous";
 
     public static GameController Instance
     {
@@ -51,6 +52,7 @@ public class GameController : MonoBehaviour
     [FoldoutGroup("References")] public GameObject NicknameInputOverlay;
     [FoldoutGroup("References")] public TextMeshProUGUI NicknamePromptMessage;
     [FoldoutGroup("References")] public TMP_InputField NicknameInput;
+    [FoldoutGroup("References")] public TextMeshProUGUI NicknameInputPlaceholder;
     [FoldoutGroup("References")] public Countdown Countdown;
     // NOTE: order of entries MUST match enum Track
     [FoldoutGroup("Tracks")] public List<GameObject> Tracks;
@@ -61,8 +63,10 @@ public class GameController : MonoBehaviour
         IsRunning = true;
         _StartTime = Time.fixedTime;
     }
-    public void RestartGame() {
-        _GotoScene.GotoGame();
+    public void Save() {
+        Target.Save.Nickname = CurrentNickname;
+        SaveSystem.Add(Target.Save);
+        SaveSystem.Save();
     }
     public void Finish(FinishResult result) { 
         if (!IsRunning) {
@@ -72,6 +76,7 @@ public class GameController : MonoBehaviour
         IsRunning = false;
         Target.Save.Result = result;
         Target.Save.TimeElapsed = Time.fixedTime - _StartTime;
+        NicknameInputPlaceholder.SetText(CurrentNickname);
         NicknameInputOverlay.SetActive(true);
 
         if (Target.Save.Finished) {
@@ -82,10 +87,11 @@ public class GameController : MonoBehaviour
     }
     public void OnNicknameInputFinished()
     {
-        Target.Save.Nickname = NicknameInput.text;
-        SaveSystem.Add(Target.Save);
-        SaveSystem.Save();
-        _GotoScene.GotoHighscore();
+        if (NicknameInput.text != "") {
+            CurrentNickname = NicknameInput.text;
+        }
+        Save();
+        GotoScene.GotoHighscore();
     }
     #endregion Public Methods
 
@@ -93,7 +99,7 @@ public class GameController : MonoBehaviour
     private void Start() {
         if ((int) SelectedTrack >= Tracks.Count) {
             Debug.LogError($"invalid track id: {SelectedTrack} - not on Tracks list");
-            _GotoScene.GotoMenu();
+            GotoScene.GotoMenu();
         }
         for (int i = 0; i < Tracks.Count; ++i) {
             Tracks[i].SetActive(i == (int) SelectedTrack);
@@ -104,12 +110,10 @@ public class GameController : MonoBehaviour
         Target.Save.Track = SelectedTrack;
         Countdown.gameObject.SetActive(true);
     }
-    private void Awake() { _GotoScene = GetComponent<GotoScene>(); }
     #endregion Unity Methods
 
     #region Private Variables
     private static GameController _GameController;
-    private GotoScene _GotoScene;
 
     private float _StartTime;
     #endregion Private Variables
