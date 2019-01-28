@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Sockets;
+using System.Text;
 using Sirenix.OdinInspector;
 using TurboSnail3001;
 using UnityEngine;
+using UnityEngine.Networking;
 
 [Serializable]
 public class Save : IComparable
@@ -48,6 +52,10 @@ public class Save : IComparable
         }
     }
 
+    public string ToJson() {
+        return JsonUtility.ToJson(this);
+    }
+
     public int CompareTo(object obj)
     {
         Save other = (Save) obj;
@@ -82,8 +90,22 @@ public class SaveSystem : MonoBehaviour
     #region Public Methods
     public void Add(Save save)
     {
+        StartCoroutine(UploadSave(save));
         if (_SaveData == null) { Load(); }
         _SaveData.Saves.Add(save);
+    }
+
+    private IEnumerator UploadSave(Save save) {
+        UnityWebRequest req = new UnityWebRequest("http://localhost:5000/hiscores", "POST");
+        req.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(save.ToJson()));
+        req.downloadHandler = new DownloadHandlerBuffer();
+        yield return req.SendWebRequest();
+
+        if (req.isHttpError) {
+            Debug.LogError(req.error + "\n" + req.downloadHandler.text);
+        } else {
+            Debug.Log("save uploaded");
+        }
     }
 
     [Button]
