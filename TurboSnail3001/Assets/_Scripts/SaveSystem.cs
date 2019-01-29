@@ -95,8 +95,10 @@ public class SaveSystem : MonoBehaviour
         _SaveData.Saves.Add(save);
     }
 
+    private static string HiscoreServerUri = "http://mradomski.pl:5000/hiscores";
+
     private IEnumerator UploadSave(Save save) {
-        UnityWebRequest req = new UnityWebRequest("http://localhost:5000/hiscores", "POST");
+        UnityWebRequest req = new UnityWebRequest(HiscoreServerUri, "POST");
         req.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes(save.ToJson()));
         req.downloadHandler = new DownloadHandlerBuffer();
         yield return req.SendWebRequest();
@@ -105,6 +107,20 @@ public class SaveSystem : MonoBehaviour
             Debug.LogError(req.error + "\n" + req.downloadHandler.text);
         } else {
             Debug.Log("save uploaded");
+        }
+    }
+
+    public delegate void OnGlobalSavesLoaded(List<Save> saves);
+
+    public static IEnumerator LoadSaves(OnGlobalSavesLoaded onGlobalSavesLoaded) {
+        UnityWebRequest req = new UnityWebRequest(HiscoreServerUri, "GET");
+        req.downloadHandler = new DownloadHandlerBuffer();
+        yield return req.SendWebRequest();
+
+        if (req.isNetworkError || req.isHttpError) {
+            Debug.LogError(req.error + "\n" + req.downloadHandler.text);
+        } else {
+            onGlobalSavesLoaded(JsonUtility.FromJson<SaveData>(req.downloadHandler.text).Saves);
         }
     }
 
