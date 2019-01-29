@@ -9,5 +9,7 @@ public class GotoScene : MonoBehaviour
     public static void GotoHighscore() { SceneManager.LoadScene(Settings.Instance.HighscoreSceneIndex); }
     public static void GotoCalibration() { SceneManager.LoadScene(Settings.Instance.CalibrationSceneIndex); }
     public static void GotoDifficultySelectMenu() { SceneManager.LoadScene(Settings.Instance.DifficultySelectMenuSceneIndex); }
+
+    public static void DoGotoMenu() { GotoMenu(); }
     #endregion Public Methods
 }
