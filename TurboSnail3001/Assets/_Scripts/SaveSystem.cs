@@ -101,7 +101,7 @@ public class SaveSystem : MonoBehaviour
         req.downloadHandler = new DownloadHandlerBuffer();
         yield return req.SendWebRequest();
 
-        if (req.isHttpError) {
+        if (req.isNetworkError || req.isHttpError) {
             Debug.LogError(req.error + "\n" + req.downloadHandler.text);
         } else {
             Debug.Log("save uploaded");
