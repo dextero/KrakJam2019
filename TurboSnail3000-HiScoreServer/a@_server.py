@@ -4,12 +4,12 @@ import json
 import logging
 import os
 
-from filelock import FileLock
 from flask import Flask, request
 import jsonschema
+from lockfile import LockFile
 
 # Where should hiscores be stored?
-HISCORE_FILE = "a@_/hiscore.json"
+HISCORE_FILE = "./hiscore.json"
 # Make sure hiscore file is no larger than this. Entries with worst scores will
 # be dropped when this is exceeded.
 HISCORE_SIZE_LIMIT = 2**24
@@ -62,6 +62,8 @@ HISCORE_JSON_SCHEMA = {
     }
 }
 
+logging.basicConfig(level=os.getenv("LOG_LEVEL") or "INFO")
+
 app = Flask(__name__)
 
 
@@ -77,7 +79,7 @@ def hiscore_goodness(hiscore):
 def hiscore_summary(hiscore):
     return "{nick}: {_not}finished, {time}".format(
             nick=hiscore["Nickname"],
-            _not=("not" if hiscore["Result"] else ""),
+            _not=("not " if hiscore["Result"] else ""),
             time=hiscore["TimeElapsed"])
 
 
@@ -112,34 +114,37 @@ def hiscores():
 
             os.makedirs(os.path.dirname(HISCORE_FILE), exist_ok=True)
 
-            with open(HISCORE_FILE, 'w+') as f, \
-                    FileLock(HISCORE_FILE, timeout=30).acquire():
-                all_hiscores_str = f.read()
+            with LockFile(HISCORE_FILE):
+                with open(HISCORE_FILE) as f:
+                    all_hiscores_str = f.read()
+
                 all_hiscores = json.loads(all_hiscores_str or "{}")
 
-                prev, other = partition(lambda h: (h["Nickname"] == nickname
+                other, prev = partition(lambda h: (h["Nickname"] == nickname
                                                    and h["Track"] == track),
                                         all_hiscores)
-                if prev and hiscore_goodness(record) < hiscore_goodness(prev):
+                if prev and hiscore_goodness(record) < hiscore_goodness(prev[0]):
                     msg = "New score worse than old: {new} < {old}".format(
-                            old=hiscore_summary(prev),
+                            old=hiscore_summary(prev[0]),
                             new=hiscore_summary(record))
                     logging.debug(msg)
                     return msg, 200
 
                 logging.debug("Updating score: %s -> %s",
-                              hiscore_summary(prev), hiscore_summary(record))
+                              hiscore_summary(prev[0]) if prev else None,
+                              hiscore_summary(record))
                 all_hiscores = [record] + other
-                all_hiscores.append(record)
-
                 all_hiscores_str = json.dumps(all_hiscores)
+
                 if len(all_hiscores_str) > HISCORE_SIZE_LIMIT:
                     # TODO: group by track
                     all_hiscores.sort(hiscore_goodness, reverse=True)
+                    logging.debug("Trimming hiscore file, dropping %s",
+                                  hiscore_summary(all_hiscores[-1]))
                     all_hiscores.pop()
                     all_hiscores_str = json.dumps(all_hiscores)
 
-                f.seek(0)
-                f.write(all_hiscores_str)
+                with open(HISCORE_FILE, 'w') as f:
+                    f.write(all_hiscores_str)
 
     return "", 200
