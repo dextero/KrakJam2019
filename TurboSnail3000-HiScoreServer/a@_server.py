@@ -94,8 +94,11 @@ def partition(pred, iterable):
 @app.route("/hiscores", methods=['GET', 'POST'])
 def hiscores():
     if request.method == 'GET':
-        with open(HISCORE_FILE) as f:
-            return f.read()
+        try:
+            with open(HISCORE_FILE) as f:
+                return f.read()
+        except FileNotFoundError:
+            return '{"Saves":[]}'
     elif request.method == 'POST':
         record = request.get_data(RECORD_SIZE_LIMIT_B, as_text=True)
         if len(record) >= RECORD_SIZE_LIMIT_B:
@@ -115,14 +118,17 @@ def hiscores():
             os.makedirs(os.path.dirname(HISCORE_FILE), exist_ok=True)
 
             with LockFile(HISCORE_FILE):
-                with open(HISCORE_FILE) as f:
-                    all_hiscores_str = f.read()
+                try:
+                    with open(HISCORE_FILE) as f:
+                        all_hiscores_str = f.read()
+                except FileNotFoundError:
+                    all_hiscores_str = '{"Saves": []}'
 
-                all_hiscores = json.loads(all_hiscores_str or "{}")
+                all_hiscores = json.loads(all_hiscores_str)
 
                 other, prev = partition(lambda h: (h["Nickname"] == nickname
                                                    and h["Track"] == track),
-                                        all_hiscores)
+                                        all_hiscores["Saves"])
                 if prev and hiscore_goodness(record) < hiscore_goodness(prev[0]):
                     msg = "New score worse than old: {new} < {old}".format(
                             old=hiscore_summary(prev[0]),
@@ -134,7 +140,7 @@ def hiscores():
                               hiscore_summary(prev[0]) if prev else None,
                               hiscore_summary(record))
                 all_hiscores = [record] + other
-                all_hiscores_str = json.dumps(all_hiscores)
+                all_hiscores_str = json.dumps({"Saves": all_hiscores})
 
                 if len(all_hiscores_str) > HISCORE_SIZE_LIMIT:
                     # TODO: group by track
