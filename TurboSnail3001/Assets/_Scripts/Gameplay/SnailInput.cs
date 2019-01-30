@@ -7,16 +7,6 @@ namespace TurboSnail3001
     [RequireComponent(typeof(Snail))]
     public class SnailInput : MonoBehaviour
     {
-        public static bool IsLinux
-        {
-            get
-            {
-                // https://stackoverflow.com/a/5117005/2339636
-                int p = (int)Environment.OSVersion.Platform;
-                return (p == 4) || (p == 6) || (p == 128);
-            }
-        }
-
         #region Public Type
         [Serializable]
         public class SettingsData
@@ -71,46 +61,22 @@ namespace TurboSnail3001
 
             var input = GameController.Instance.InputSystem;
 
-            if (IsLinux)
+            left = input.LeftController.Position;
+            right = input.RightController.Position;
+
+            if(UnityEngine.Input.anyKey)
             {
-                /* on linux _Input is null when controllers are not plugged in */
-                if (float.IsNaN(input.LeftController.Position) || float.IsNaN(input.RightController.Position))
+                left = 0.0f;
+                right = 0.0f;
 
+                if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
                 {
-                    if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
-                    {
-                        right = 1.0f;
-                    }
-                    if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
-                    {
-                        left = 1.0f;
-                    }
+                    right = 1.0f;
+
                 }
-                else
+                if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
                 {
-                    left = input.LeftController.Position;
-                    right = input.RightController.Position;
-                }
-            }
-            else
-            {
-                left = input.LeftController.Position;
-                right = input.RightController.Position;
-
-                if(UnityEngine.Input.anyKey)
-                {
-                    left = 0.0f;
-                    right = 0.0f;
-
-                    if (UnityEngine.Input.GetKey(KeyCode.LeftArrow))
-                    {
-                        right = 1.0f;
-                      
-                    }
-                    if (UnityEngine.Input.GetKey(KeyCode.RightArrow))
-                    {
-                        left  = 1.0f;
-                    }
+                    left  = 1.0f;
                 }
             }
 
